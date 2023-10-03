@@ -1,2 +1,3 @@
 # Plugins-BetterDiscord
- Vous retrouverez ici des plugins pour BetterDiscord translatés en français
+
+Veillez à bien installer tout les fichiers dans "Librairies" pour le bon fonctionnement des plugins.
