@@ -1,7 +1,7 @@
 /**
  * @name MessageLogger
  * @version 1.8.25
- * @source 
+ * @source https://github.com/XaaenS/Plugins-Discord/tree/main
  */
 /*@cc_on
 @if (@_jscript)
@@ -37,16 +37,16 @@ const MLV2_TYPE_L3 = Symbol('MLV2_TYPE_L3');
 
 module.exports = class MessageLoggerV2 {
   getName() {
-    return 'MessageLoggerV2';
+    return 'MessageLogger';
   }
   getVersion() {
     return '1.8.25';
   }
   getAuthor() {
-    return 'Lighty';
+    return 'Sneax';
   }
   getDescription() {
-    return 'Saves all deleted and purged messages, as well as all edit history and ghost pings. With highly configurable ignore options, and even restoring deleted messages after restarting Discord.';
+    return 'Sauvegarde tous les messages supprimés et purgés, ainsi que l historique des modifications et les pings fantômes.Avec des options d ignorance hautement configurables, et même la restauration des messages supprimés après le redémarrage de Discord.';
   }
   load() { }
   start() {
@@ -282,7 +282,7 @@ module.exports = class MessageLoggerV2 {
       },
       imageCacheDir: this.pluginDir + '/MLV2_IMAGE_CACHE',
       flags: 0,
-      autoUpdate: true,
+      autoUpdate: false,
       versionInfo: ''
     };
     const Flags = {
@@ -1272,70 +1272,70 @@ module.exports = class MessageLoggerV2 {
     // );
     list.push(
       this.createGroup({
-        name: 'Ignores and overrides',
+        name: 'Ignoré et remplacé',
         id: this.obfuscatedClass('ml2-settings-ignores-overrides'),
         collapsible: true,
         shown: false,
         settings: [
           {
-            name: 'Ignore muted servers',
+            name: 'Ignorer les serveurs en sourdine',
             id: 'ignoreMutedGuilds',
             type: 'switch'
           },
           {
-            name: 'Ignore muted channels',
+            name: 'Ignorer les chaînes en sourdine',
             id: 'ignoreMutedChannels',
             type: 'switch'
           },
           {
-            name: 'Ignore bots',
+            name: 'Ignorer les bots',
             id: 'ignoreBots',
             type: 'switch'
           },
           {
-            name: 'Ignore messages posted by you',
+            name: 'Ignorer les messages postés par vous',
             id: 'ignoreSelf',
             type: 'switch'
           },
           {
-            name: 'Ignore message edits from you',
+            name: 'Ignorer les messages édités par vous',
             id: 'ignoreLocalEdits',
             type: 'switch'
           },
           {
-            name: 'Ignore message deletes from you',
+            name: 'Ignorer les messages supprimés par vous',
             note: 'Only ignores if you delete your own message.',
             id: 'ignoreLocalDeletes',
             type: 'switch'
           },
           {
-            name: 'Ignore blocked users',
+            name: 'Ignorer les utilisateurs bloqués',
             id: 'ignoreBlockedUsers',
             type: 'switch'
           },
           {
-            name: 'Ignore NSFW channels',
+            name: 'Ignorer les chaînes NSFW',
             id: 'ignoreNSFW',
             type: 'switch'
           },
           {
-            name: 'Only log whitelist',
+            name: 'Liste blanche des journaux uniquement',
             id: 'onlyLogWhitelist',
             type: 'switch'
           },
           {
-            name: 'Always log selected channel, regardless of whitelist/blacklist',
+            name: 'Toujours enregistrer le canal sélectionné, indépendamment de la liste blanche ou noire.',
             id: 'alwaysLogSelected',
             type: 'switch'
           },
           {
-            name: 'Always log DMs, regardless of whitelist/blacklist',
+            name: 'Toujours enregistrer les DM, indépendamment de la liste blanche ou de la liste noire.',
             id: 'alwaysLogDM',
             type: 'switch'
           },
           {
-            name: 'Always log ghost pings, regardless of whitelist/blacklist',
-            note: 'Messages sent in ignored/muted/blacklisted servers and channels will be logged and shown in sent, but only gets saved if a ghost ping occurs.',
+            name: 'Toujours enregistrer les pings fantômes, indépendamment de la liste blanche ou noire.',
+            note: 'Les messages envoyés aux serveurs et canaux ignorés/mutés/blacklistés seront enregistrés et affichés dans les messages envoyés, mais ne seront sauvegardés que si un ping fantôme se produit.',
             id: 'alwaysLogGhostPings',
             type: 'switch'
           }
@@ -1344,13 +1344,13 @@ module.exports = class MessageLoggerV2 {
     );
     list.push(
       this.createGroup({
-        name: 'Display settings',
+        name: 'Paramètres d affichage',
         id: this.obfuscatedClass('ml2-settings-display'),
         collapsible: true,
         shown: false,
         settings: [
           {
-            name: 'Display dates with timestamps',
+            name: 'Afficher les dates avec les horodatages',
             id: 'displayDates',
             type: 'switch',
             callback: () => {
@@ -1362,7 +1362,7 @@ module.exports = class MessageLoggerV2 {
             }
           },
           {
-            name: 'Display deleted messages in chat',
+            name: 'Afficher les messages supprimés dans le chat',
             id: 'showDeletedMessages',
             type: 'switch',
             callback: () => {
@@ -1371,13 +1371,13 @@ module.exports = class MessageLoggerV2 {
             }
           },
           {
-            name: 'Display edited messages in chat',
+            name: 'Afficher les messages édités dans le chat',
             id: 'showEditedMessages',
             type: 'switch',
             callback: () => this.dispatcher.dispatch({ type: 'MLV2_FORCE_UPDATE_MESSAGE_CONTENT' })
           },
           {
-            name: 'Max number of shown edits',
+            name: 'Nombre maximum d éditions affichées',
             id: 'maxShownEdits',
             type: 'textbox',
             onChange: val => {
@@ -1387,19 +1387,19 @@ module.exports = class MessageLoggerV2 {
             }
           },
           {
-            name: 'Show oldest edit instead of newest if over the shown edits limit',
+            name: 'Afficher l édition la plus ancienne au lieu de la plus récente si la limite d édition affichée est dépassée',
             id: 'hideNewerEditsFirst',
             type: 'switch',
             callback: () => this.dispatcher.dispatch({ type: 'MLV2_FORCE_UPDATE_MESSAGE_CONTENT' })
           },
           {
-            name: 'Use red background instead of red text for deleted messages',
+            name: 'Utiliser un arrière-plan rouge au lieu d un texte bleu pour les messages supprimés',
             id: 'useAlternativeDeletedStyle',
             type: 'switch',
             callback: () => this.dispatcher.dispatch({ type: 'MLV2_FORCE_UPDATE_MESSAGE' })
           },
           {
-            name: 'Display purged messages in chat',
+            name: 'Afficher les messages purgés dans le chat',
             id: 'showPurgedMessages',
             type: 'switch',
             callback: () => {
@@ -1408,7 +1408,7 @@ module.exports = class MessageLoggerV2 {
             }
           },
           {
-            name: 'Restore deleted messages after reload',
+            name: 'Restaurer les messages supprimés après un rechargement',
             id: 'restoreDeletedMessages',
             type: 'switch',
             callback: val => {
@@ -1419,17 +1419,17 @@ module.exports = class MessageLoggerV2 {
             }
           },
           {
-            name: 'Show amount of new deleted messages when entering a channel',
+            name: 'Afficher le nombre de nouveaux messages supprimés lors de l entrée dans un canal',
             id: 'showDeletedCount',
             type: 'switch'
           },
           {
-            name: 'Show amount of new edited messages when entering a channel',
+            name: 'Afficher le nombre de nouveaux messages édités lors de l entrée dans un canal',
             id: 'showEditedCount',
             type: 'switch'
           },
           {
-            name: 'Display update notes',
+            name: 'Afficher les notes de mise à jour',
             id: 'displayUpdateNotes',
             type: 'switch'
           },
@@ -1449,8 +1449,8 @@ module.exports = class MessageLoggerV2 {
             ]
           },
           {
-            name: 'Use XenoLib notifications instead of toasts',
-            note: "This works for edit, send, delete and purge toasts, as well as delete and edit count toasts. Toggle it if you don't know what this does.",
+            name: 'Utiliser les notifications XenoLib au lieu des toasts',
+            note: "Cela fonctionne pour les toasts d'édition, d'envoi, de suppression et de purge, ainsi que pour les toasts de suppression et d'édition du nombre de toasts. Basculez si vous ne savez pas ce que cela fait.",
             id: 'useNotificationsInstead',
             type: 'switch',
             callback: e => (e ? XenoLib.Notifications.success('Using Xenolib notifications', { timeout: 5000 }) : this.showToast('Using toasts', { type: 'success', timeout: 5000 }))
@@ -1460,13 +1460,13 @@ module.exports = class MessageLoggerV2 {
     );
     list.push(
       this.createGroup({
-        name: 'Misc settings',
+        name: 'Paramètres divers',
         id: this.obfuscatedClass('ml2-settings-misc'),
         collapsible: true,
         shown: false,
         settings: [
           {
-            name: 'Disable saving data. Logged messages are erased after reload/restart. Disables auto backup.',
+            name: 'Désactive la sauvegarde des données. Les messages enregistrés sont effacés après le rechargement/redémarrage. Désactive la sauvegarde automatique.',
             id: 'dontSaveData',
             type: 'switch',
             callback: val => {
@@ -1475,7 +1475,7 @@ module.exports = class MessageLoggerV2 {
             }
           },
           {
-            name: "Auto backup data (won't fully prevent losing data, just prevent total data loss)",
+            name: "Sauvegarde automatique des données (n'empêche pas totalement la perte de données, mais seulement la perte totale de données)",
             id: 'autoBackup',
             type: 'switch',
             callback: val => {
@@ -1489,23 +1489,23 @@ module.exports = class MessageLoggerV2 {
                             type: 'color'
                         }, */,
           {
-            name: 'Aggresive message caching (makes sure we have the data of any deleted or edited messages)',
+            name: 'Mise en cache agressive des messages (pour s assurer que nous disposons des données de tous les messages supprimés ou modifiés) ',
             id: 'aggresiveMessageCaching',
             type: 'switch'
           },
           {
-            name: 'Cache all images by storing them locally in the MLV2_IMAGE_CACHE folder inside the plugins folder',
+            name: 'Mettre en cache toutes les images en les stockant localement dans le dossier MLV2_IMAGE_CACHE à l intérieur du dossier plugins.',
             id: 'cacheAllImages',
             type: 'switch'
           },
           {
-            name: "Don't delete cached images",
-            note: "If the message the image is from is erased from data, the cached image will be kept. You'll have to monitor disk usage on your own!",
+            name: "Ne pas supprimer les images mises en cache",
+            note: "Si le message dont provient l'image est effacé des données, l'image mise en cache sera conservée. Vous devrez surveiller vous-même l'utilisation du disque !",
             id: 'dontDeleteCachedImages',
             type: 'switch'
           },
           {
-            name: 'Display open logs button next to the search box top right in channels',
+            name: 'Bouton d affichage des journaux ouverts à côté de la boîte de recherche en haut à droite dans les canaux',
             id: 'showOpenLogsButton',
             type: 'switch',
             callback: val => {
@@ -1514,7 +1514,7 @@ module.exports = class MessageLoggerV2 {
             }
           },
           {
-            name: 'Block spam edit notifications (if enabled)',
+            name: 'Bloquer les notifications de modification de spam (si activé)',
             id: 'blockSpamEdit',
             type: 'switch'
           }
@@ -1523,13 +1523,13 @@ module.exports = class MessageLoggerV2 {
     );
     list.push(
       this.createGroup({
-        name: 'Toast notifications for guilds',
+        name: 'Notifications de toasts pour les guildes',
         id: this.obfuscatedClass('ml2-settings-toast-guilds'),
         collapsible: true,
         shown: false,
         settings: [
           {
-            name: 'Message sent',
+            name: 'Message envoyé',
             id: 'sent',
             type: 'switch',
             value: this.settings.toastToggles.sent,
@@ -1538,7 +1538,7 @@ module.exports = class MessageLoggerV2 {
             }
           },
           {
-            name: 'Message edited',
+            name: 'Message édité',
             id: 'edited',
             type: 'switch',
             value: this.settings.toastToggles.edited,
@@ -1547,7 +1547,7 @@ module.exports = class MessageLoggerV2 {
             }
           },
           {
-            name: 'Message deleted',
+            name: 'Message supprimé',
             id: 'deleted',
             type: 'switch',
             value: this.settings.toastToggles.deleted,
@@ -1565,7 +1565,7 @@ module.exports = class MessageLoggerV2 {
             }
           },
           {
-            name: 'Disable toasts for local user (yourself)',
+            name: 'Désactiver les toasts pour l utilisateur local (vous-même)',
             id: 'disableToastsForLocal',
             type: 'switch',
             value: this.settings.toastToggles.disableToastsForLocal,
@@ -1579,13 +1579,13 @@ module.exports = class MessageLoggerV2 {
 
     list.push(
       this.createGroup({
-        name: 'Toast notifications for DMs',
+        name: 'Notifications de toasts pour les DM',
         id: this.obfuscatedClass('ml2-settings-toast-dms'),
         collapsible: true,
         shown: false,
         settings: [
           {
-            name: 'Message sent',
+            name: 'Message envoyé',
             id: 'sent',
             type: 'switch',
             value: this.settings.toastTogglesDMs.sent,
@@ -1603,7 +1603,7 @@ module.exports = class MessageLoggerV2 {
             }
           },
           {
-            name: 'Message deleted',
+            name: 'Message supprimé',
             id: 'deleted',
             type: 'switch',
             value: this.settings.toastTogglesDMs.deleted,
@@ -1626,14 +1626,14 @@ module.exports = class MessageLoggerV2 {
 
     list.push(
       this.createGroup({
-        name: 'Message caps',
+        name: 'Message en majuscules',
         id: this.obfuscatedClass('ml2-settings-caps'),
         collapsible: true,
         shown: false,
         settings: [
           {
-            name: 'Cached messages cap',
-            note: 'Max number of sent messages logger should keep track of',
+            name: 'Message en majuscules caché',
+            note: 'Nombre maximum de messages envoyés dont l enregistreur doit garder la trace',
             id: 'messageCacheCap',
             type: 'textbox',
             onChange: val => {
@@ -1646,8 +1646,8 @@ module.exports = class MessageLoggerV2 {
             }
           },
           {
-            name: 'Saved messages cap',
-            note: "Max number of messages saved to disk, this limit is for deleted, edited and purged INDIVIDUALLY. So if you have it set to 1000, it'll be 1000 edits, 1000 deletes and 1000 purged messages max",
+            name: 'Message en majuscules sauvegardé',
+            note: "Nombre maximum de messages sauvegardés sur le disque, cette limite s applique aux messages supprimés, édités et purgés INDIVIDUELLEMENT. Ainsi, si la limite est fixée à 1000, il s agira de 1000 modifications, 1000 suppressions et 1000 messages purgés au maximum.",
             id: 'savedMessagesCap',
             type: 'textbox',
             onChange: val => {
@@ -1660,8 +1660,8 @@ module.exports = class MessageLoggerV2 {
             }
           },
           {
-            name: 'Menu message render cap',
-            note: 'How many messages will show before the LOAD MORE button will show',
+            name: 'Message de menu',
+            note: 'Combien de messages s affichent avant que le bouton CHARGER PLUS ne s affiche ?',
             id: 'renderCap',
             type: 'textbox',
             onChange: val => {
@@ -1676,13 +1676,13 @@ module.exports = class MessageLoggerV2 {
 
     list.push(
       this.createGroup({
-        name: 'Advanced',
+        name: 'Avancé',
         id: this.obfuscatedClass('ml2-settings-advanced'),
         collapsible: true,
         shown: false,
         settings: [
           {
-            name: 'Obfuscate CSS classes',
+            name: 'Obfusquer les classes CSS',
             note: 'Enable this if some plugin, library or theme is blocking you from using the plugin',
             id: 'obfuscateCSSClasses',
             type: 'switch'
@@ -1705,8 +1705,8 @@ module.exports = class MessageLoggerV2 {
             }
           },
           {
-            name: 'Contextmenu submenu name',
-            note: "Instead of saying Message Logger, make it say something else, so it's screenshot friendly",
+            name: 'Nom du sous-menu du menu contextuel',
+            note: "Au lieu de dire Message Logger, dites quelque chose d'autre, de façon à ce que ce soit adapté aux captures d'écran.",
             id: 'contextmenuSubmenuName',
             type: 'textbox'
           } /* ,
@@ -1750,20 +1750,7 @@ module.exports = class MessageLoggerV2 {
     const div = document.createElement('div');
     div.id = this.obfuscatedClass('ml2-settings-buttonbox');
     div.style.display = 'inline-flex';
-    div.appendChild(this.createButton('Changelog', () => XenoLib.showChangelog(`${this.getName()} has been updated!`, this.getVersion(), this.getChanges())));
     div.appendChild(this.createButton('Stats', () => this.showStatsModal()));
-    div.appendChild(this.createButton('Donate', () => this.nodeModules.electron.shell.openExternal('https://paypal.me/lighty13')));
-    div.appendChild(
-      this.createButton('Support server', () => {
-        ZeresPluginLibrary.DiscordModules.LayerManager.popLayer();
-        if (this.tools.getServer('389049952732446731')) {
-          ZeresPluginLibrary.DiscordModules.GuildActions.transitionToGuildSync('389049952732446731');
-        } else {
-          ZeresPluginLibrary.DiscordModules.InviteActions.openNativeAppModal('NYvWdN5');
-        }
-      })
-    );
-    div.appendChild(this.createButton('Help', () => this.showLoggerHelpModal()));
     let button = div.firstElementChild;
     while (button) {
       button.style.marginRight = button.style.marginLeft = `5px`;
@@ -2178,108 +2165,6 @@ module.exports = class MessageLoggerV2 {
   removeOpenLogsButton() {
     this.channelLogButton.remove();
   }
-  showLoggerHelpModal(initial = false) {
-    this.createModal({
-      confirmText: 'OK',
-      header: 'Logger help',
-      size: this.createModal.confirmationModal.Sizes.LARGE,
-      children: [
-        ZeresPluginLibrary.ReactTools.createWrappedElement([
-          this.parseHTML(
-            `<div class="${this.multiClasses.defaultColor}" style="max-height: 0; min-height: 60vh;">
-                               ${initial ? '</br><span style="font-size: 40px;">As you are a <strong>first time user</strong>, you must know in order to have a server be logged, you must <strong>RIGHT CLICK</strong> a server or channel and add it to the whitelist.</br>Alternatively if this behavior is unwanted, you can always log all unmuted servers and channels by disabling <strong>Only log whitelist</strong> in logger settings under <strong>IGNORES AND OVERRIDES</strong>.</span></br></br>' : ''}
-                               Hello! This is the ${this.getName()} help modal! You may at any time open this in plugin settings by clicking the help button, or in the menu by pressing the question mark button and then then Logger help button.</br>
-                               <strong>Menu:</strong></br></br>
-                                <div class="${this.style.textIndent}">
-                                    DELETE + LEFT-CLICK:</br>
-                                    <div class="${this.style.textIndent}">
-                                        Clicking on a message, deletes the message</br>
-                                        Clicking on an edit deletes that specific edit</br>
-                                        Clicking on the timestamp deletes all messages in that message group
-                                    </div></br>
-                                    RIGHT-CLICK:</br>
-                                    <div class="${this.style.textIndent}">
-                                        Right-clicking the timestamp opens up options for the entire message group
-                                    </div></br>
-                                </div>
-                                <strong>Toasts:</strong></br>
-                                <div class="${this.style.textIndent}">
-                                    Note: Little "notifications" in discord that tell you if a message was edited, deleted, purged etc are called Toasts!</br></br>
-                                    LEFT-CLICK:</br>
-                                    <div class="${this.style.textIndent}">
-                                        Opens menu with the relevant tab</br>
-                                    </div></br>
-                                    RIGHT-CLICK:</br>
-                                    <div class="${this.style.textIndent}">
-                                        Jumps to relevant message in the relevant channel
-                                    </div></br>
-                                    MIDDLE-CLICK/SCROLLWHEEL-CLICK:</br>
-                                    <div class="${this.style.textIndent}">
-                                        Only dismisses/closes the Toast.
-                                    </div></br>
-                                </div>
-                                <strong>Notifications:</strong></br>
-                                <div class="${this.style.textIndent}">
-                                    Note: They show in the top right corner and are called XenoLib notifications. Can be enabled in Settings > Display Settings, all the way at the bottom.</br></br>
-                                    LEFT-CLICK:</br>
-                                    <div class="${this.style.textIndent}">
-                                        Opens menu with the relevant tab</br>
-                                    </div></br>
-                                    RIGHT-CLICK:</br>
-                                    <div class="${this.style.textIndent}">
-                                        Jumps to relevant message in the relevant channel
-                                    </div></br>
-                                </div>
-                                <strong>Open Logs button (top right next to search):</strong></br>
-                                <div class="${this.style.textIndent}">
-                                    LEFT-CLICK:</br>
-                                    <div class="${this.style.textIndent}">
-                                        Opens menu</br>
-                                    </div></br>
-                                    RIGHT-CLICK:</br>
-                                    <div class="${this.style.textIndent}">
-                                        Opens filtered menu that only shows messages from selected channel</br>
-                                    </div></br>
-                                </div>
-                                <strong>Whitelist/blacklist, ignores and overrides:</strong></br>
-                                <div class="${this.style.textIndent}">
-                                    WHITELIST-ONLY:</br>
-                                    <div class="${this.style.textIndent}">
-                                        All servers are ignored unless whitelisted</br>
-                                        Muted channels in whitelisted servers are ignored unless whitelisted or "Ignore muted channels" is disabled</br>
-                                        All channels in whitelisted servers are logged unless blacklisted, or muted and "Ignore muted channels" is enabled
-                                    </div></br>
-                                    DEFAULT:</br>
-                                    <div class="${this.style.textIndent}">
-                                        All servers are logged unless blacklisted or muted and "Ignore muted servers" is enabled</br>
-                                        Muted channels are ignored unless whitelisted or "Ignore muted channels" is disabled</br>
-                                        Muted servers are ignored unless whitelisted or "Ignore muted servers" is disabled</br>
-                                        Whitelisted channels in muted or blacklisted servers are logged</br>
-                                    </div></br>
-                                    ALL:</br>
-                                    <div class="${this.style.textIndent}">
-                                        Whitelisted channels in blacklisted servers are logged</br>
-                                        Blacklisted channels in whitelisted servers are ignored</br>
-                                        "Always log selected channel" overrides blacklist, whitelist-only mode, NSFW channel ignore, mute</br>
-                                        "Always log DMs" overrides blacklist as well as whitelist-only mode</br>
-                                        Channels marked NSFW and not whitelisted are ignored unless "Ignore NSFW channels" is disabled
-                                    </div></br>
-                                </div>
-                                <strong>Chat:</strong></br>
-                                <div class="${this.style.textIndent}">
-                                    RIGHT-CLICK:</br>
-                                    <div class="${this.style.textIndent}">
-                                        Right-clicking an edit (darkened text) allows you to delete that edit, or hide edits</br>
-                                        Right-clicking on a edited or deleted message gives you the option to hide the deleted message or hide or unhide edits, remove the edited or deleted message from log and remove deleted tint which makes the message look like it isn't deleted.
-                                    </div></br>
-                                </div>
-                            </div>`
-          )
-        ])
-      ],
-      red: false
-    });
-  }
   showStatsModal() {
     const elements = [];
     let totalMessages = Object.keys(this.messageRecord).length;
@@ -2316,10 +2201,10 @@ module.exports = class MessageLoggerV2 {
     const addLine = (name, value) => {
       elements.push(this.parseHTML(`<div class="${this.multiClasses.defaultColor}"><strong>${name}</strong>: ${value}</div></br>`));
     };
-    addLine('Total messages', totalMessages);
-    addLine('Deleted message count', messageCounts[0]);
-    addLine('Edited message count', messageCounts[1]);
-    addLine('Sent message count', this.cachedMessageRecord.length);
+    addLine('Total des messages', totalMessages);
+    addLine('Nombre de messages supprimés', messageCounts[0]);
+    addLine('Nombre de messages édités', messageCounts[1]);
+    addLine('Nombre de messages envoyés', this.cachedMessageRecord.length);
 
     let channel = this.tools.getChannel(mostDeletesChannel.id);
     if (channel) addLine('Most deletes', mostDeletesChannel.num + ' ' + this.getLiteralName(channel.guild_id, channel.id));
@@ -2329,7 +2214,7 @@ module.exports = class MessageLoggerV2 {
     //  addLine('Data file size severity', this.slowSaveModeStep == 0 ? 'OK' : this.slowSaveModeStep == 1 ? 'MILD' : this.slowSaveModeStep == 2 ? 'BAD' : 'EXTREME');
     this.createModal({
       confirmText: 'OK',
-      header: 'Data stats',
+      header: 'Données statistiques',
       size: ZeresPluginLibrary.Modals.ModalSizes.SMALL,
       children: [ZeresPluginLibrary.ReactTools.createWrappedElement(elements)],
       red: false
@@ -4264,38 +4149,6 @@ module.exports = class MessageLoggerV2 {
     };
     inputEl.addEventListener('keyup', onUpdate); // maybe I can actually use keydown but it didn't work for me
     inputEl.addEventListener('paste', onUpdate);
-    const helpButton = textBox.getElementsByClassName(classes.questionMarkSingle)[0];
-    helpButton.addEventListener('click', () => {
-      const extraHelp = this.createButton('Logger help', () => this.showLoggerHelpModal());
-      this.createModal({
-        confirmText: 'OK',
-        header: 'Filter help',
-        size: this.createModal.confirmationModal.Sizes.LARGE,
-        children: [
-          ZeresPluginLibrary.ReactTools.createWrappedElement([
-            this.parseHTML(
-              `<div class="${this.multiClasses.defaultColor}">"server: <servername or serverid>" - Filter results with the specified server name or id.
-                        "channel: <channelname or channelid>" - Filter results with the specified channel name or id.
-                        "user: <username, nickname or userid>" - Filter results with the specified username, nickname or userid.
-                        "message: <search or messageid>" or "content: <search or messageid>" - Filter results with the specified message content.
-                        "has: <image|link> - Filter results to only images or links
-
-                        Separate the search tags with commas.
-                        Example: server: tom's bd stuff, message: heck
-
-
-                        Shortcut help:
-
-                        "Ctrl + M" (default) - Open message log.
-                        "Ctrl + N" (default) - Open message log with selected channel filtered.\n\n</div>`.replace(/\n/g, '</br>')
-            ),
-            extraHelp
-          ])
-        ],
-        red: false
-      });
-    });
-    new ZeresPluginLibrary.Tooltip(helpButton, 'Besoin d\'aide ?', { side: 'top' });
     return textBox;
   }
   // >>-|| MENU MODAL CREATION ||-<<
