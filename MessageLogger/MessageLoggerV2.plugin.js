@@ -1039,7 +1039,7 @@ module.exports = class MessageLoggerV2 {
       this.menu.filter = `channel:${this.selectedChannel.id}`;
       this.openWindow();
     });
-    new ZeresPluginLibrary.Tooltip(this.channelLogButton, 'Open Logs', { side: 'bottom' });
+    new ZeresPluginLibrary.Tooltip(this.channelLogButton, 'Ouvrir les logs', { side: 'bottom' });
 
     if (this.settings.showOpenLogsButton) this.addOpenLogsButton();
 
@@ -1439,11 +1439,11 @@ module.exports = class MessageLoggerV2 {
             type: 'radio',
             options: [
               {
-                name: 'New - old',
+                name: 'Nouveau - Ancien',
                 value: false
               },
               {
-                name: 'Old - new',
+                name: 'Ancien - Nouveau',
                 value: true
               }
             ]
@@ -2236,41 +2236,41 @@ module.exports = class MessageLoggerV2 {
                                     <div class="${this.style.textIndent}">
                                         Ouvrir le menu</br>
                                     </div></br>
-                                    RIGHT-CLICK:</br>
+                                    CLIQUE DROIT:</br>
                                     <div class="${this.style.textIndent}">
-                                        Opens filtered menu that only shows messages from selected channel</br>
+                                    Ouvre le menu filtré qui affiche uniquement les messages du canal sélectionné</br>
                                     </div></br>
                                 </div>
-                                <strong>Whitelist/blacklist, ignores and overrides:</strong></br>
+                                <strong>Liste blanche/liste noire, ignore et remplace:</strong></br>
                                 <div class="${this.style.textIndent}">
-                                    WHITELIST-ONLY:</br>
+                                LISTE BLANCHE UNIQUEMENT:</br>
                                     <div class="${this.style.textIndent}">
-                                        All servers are ignored unless whitelisted</br>
-                                        Muted channels in whitelisted servers are ignored unless whitelisted or "Ignore muted channels" is disabled</br>
-                                        All channels in whitelisted servers are logged unless blacklisted, or muted and "Ignore muted channels" is enabled
+                                    Tous les serveurs sont ignorés sauf s'ils sont sur liste blanche</br>
+                                    Les canaux mis en sourdine sur les serveurs sur liste blanche sont ignorés à moins que la liste blanche ou que « Ignorer les canaux mis en sourdine » ne soit désactivé.</br>
+                                    Tous les canaux des serveurs sur liste blanche sont enregistrés à moins qu'ils ne soient sur liste noire ou mis en sourdine et que « Ignorer les canaux mis en sourdine » soit activé.
                                     </div></br>
-                                    DEFAULT:</br>
+                                    DÉFAUT:</br>
                                     <div class="${this.style.textIndent}">
-                                        All servers are logged unless blacklisted or muted and "Ignore muted servers" is enabled</br>
-                                        Muted channels are ignored unless whitelisted or "Ignore muted channels" is disabled</br>
-                                        Muted servers are ignored unless whitelisted or "Ignore muted servers" is disabled</br>
-                                        Whitelisted channels in muted or blacklisted servers are logged</br>
+                                    Tous les serveurs sont enregistrés sauf s'ils sont sur liste noire ou mis en sourdine et que « Ignorer les serveurs mis en sourdine » est activé.</br>
+                                    Les canaux mis en sourdine sont ignorés à moins qu'ils ne soient ajoutés à la liste blanche ou que « Ignorer les canaux mis en sourdine » soit désactivé.</br>
+                                    Les serveurs mis en sourdine sont ignorés à moins qu'ils ne soient ajoutés à la liste blanche ou que « Ignorer les serveurs muets » soit désactivé.</br>
+                                    Les canaux sur liste blanche sur les serveurs mis en sourdine ou sur liste noire sont enregistrés</br>
                                     </div></br>
-                                    ALL:</br>
+                                    TOUT:</br>
                                     <div class="${this.style.textIndent}">
-                                        Whitelisted channels in blacklisted servers are logged</br>
-                                        Blacklisted channels in whitelisted servers are ignored</br>
-                                        "Always log selected channel" overrides blacklist, whitelist-only mode, NSFW channel ignore, mute</br>
-                                        "Always log DMs" overrides blacklist as well as whitelist-only mode</br>
-                                        Channels marked NSFW and not whitelisted are ignored unless "Ignore NSFW channels" is disabled
+                                    Les chaînes sur liste blanche sur les serveurs sur liste noire sont enregistrées</br>
+                                    Les chaînes sur liste noire sur les serveurs sur liste blanche sont ignorées</br>
+                                        "Toujours enregistrer le canal sélectionné" remplace la liste noire, le mode liste blanche uniquement, le canal NSFW ignoré, le mode muet</br>
+                                        "Toujours enregistrer les DM" remplace la liste noire ainsi que le mode liste blanche uniquement</br>
+                                        Les chaînes marquées NSFW et non sur liste blanche sont ignorées, sauf si « Ignorer les chaînes NSFW » est désactivé.
                                     </div></br>
                                 </div>
                                 <strong>Chat:</strong></br>
                                 <div class="${this.style.textIndent}">
-                                    RIGHT-CLICK:</br>
+                                    CLIQUE DROIT:</br>
                                     <div class="${this.style.textIndent}">
-                                        Right-clicking an edit (darkened text) allows you to delete that edit, or hide edits</br>
-                                        Right-clicking on a edited or deleted message gives you the option to hide the deleted message or hide or unhide edits, remove the edited or deleted message from log and remove deleted tint which makes the message look like it isn't deleted.
+                                    Un clic droit sur une modification (texte assombri) vous permet de supprimer cette modification ou de masquer les modifications.</br>
+                                    Un clic droit sur un message modifié ou supprimé vous donne la possibilité de masquer le message supprimé ou de masquer ou d'afficher les modifications, de supprimer le message modifié ou supprimé du journal et de supprimer la teinte supprimée qui donne l'impression que le message n'est pas supprimé.
                                     </div></br>
                                 </div>
                             </div>`
@@ -4237,7 +4237,7 @@ module.exports = class MessageLoggerV2 {
     }
     const classes = this.createTextBox.classes;
     let textBox = this.parseHTML(
-      `<div class="${classes.inputWrapper}"><div class="${classes.inputMultiInput}"><div class="${classes.inputWrapper} ${classes.multiInputFirst}"><input class="${classes.inputDefaultMultiInputField}" name="username" type="text" placeholder="Message filter" maxlength="999" value="${this.menu.filter}" id="${this.style.filter}"></div><span tabindex="0" class="${classes.questionMark}" role="button"><svg name="QuestionMark" class="${classes.icon}" aria-hidden="false" width="16" height="16" viewBox="0 0 24 24"><g fill="currentColor" fill-rule="evenodd" transform="translate(7 4)"><path d="M0 4.3258427C0 5.06741573.616438356 5.68539326 1.35616438 5.68539326 2.09589041 5.68539326 2.71232877 5.06741573 2.71232877 4.3258427 2.71232877 2.84269663 4.31506849 2.78089888 4.5 2.78089888 4.68493151 2.78089888 6.28767123 2.84269663 6.28767123 4.3258427L6.28767123 4.63483146C6.28767123 5.25280899 5.97945205 5.74719101 5.42465753 6.05617978L4.19178082 6.73595506C3.51369863 7.10674157 3.14383562 7.78651685 3.14383562 8.52808989L3.14383562 9.64044944C3.14383562 10.3820225 3.76027397 11 4.5 11 5.23972603 11 5.85616438 10.3820225 5.85616438 9.64044944L5.85616438 8.96067416 6.71917808 8.52808989C8.1369863 7.78651685 9 6.30337079 9 4.69662921L9 4.3258427C9 1.48314607 6.71917808 0 4.5 0 2.21917808 0 0 1.48314607 0 4.3258427zM4.5 12C2.5 12 2.5 15 4.5 15 6.5 15 6.5 12 4.5 12L4.5 12z"></path></g></svg></span></div></div>`
+      `<div class="${classes.inputWrapper}"><div class="${classes.inputMultiInput}"><div class="${classes.inputWrapper} ${classes.multiInputFirst}"><input class="${classes.inputDefaultMultiInputField}" name="username" type="text" placeholder="Rechercher un message particulier" maxlength="999" value="${this.menu.filter}" id="${this.style.filter}"></div><span tabindex="0" class="${classes.questionMark}" role="button"><svg name="QuestionMark" class="${classes.icon}" aria-hidden="false" width="16" height="16" viewBox="0 0 24 24"><g fill="currentColor" fill-rule="evenodd" transform="translate(7 4)"><path d="M0 4.3258427C0 5.06741573.616438356 5.68539326 1.35616438 5.68539326 2.09589041 5.68539326 2.71232877 5.06741573 2.71232877 4.3258427 2.71232877 2.84269663 4.31506849 2.78089888 4.5 2.78089888 4.68493151 2.78089888 6.28767123 2.84269663 6.28767123 4.3258427L6.28767123 4.63483146C6.28767123 5.25280899 5.97945205 5.74719101 5.42465753 6.05617978L4.19178082 6.73595506C3.51369863 7.10674157 3.14383562 7.78651685 3.14383562 8.52808989L3.14383562 9.64044944C3.14383562 10.3820225 3.76027397 11 4.5 11 5.23972603 11 5.85616438 10.3820225 5.85616438 9.64044944L5.85616438 8.96067416 6.71917808 8.52808989C8.1369863 7.78651685 9 6.30337079 9 4.69662921L9 4.3258427C9 1.48314607 6.71917808 0 4.5 0 2.21917808 0 0 1.48314607 0 4.3258427zM4.5 12C2.5 12 2.5 15 4.5 15 6.5 15 6.5 12 4.5 12L4.5 12z"></path></g></svg></span></div></div>`
     );
     const inputEl = textBox.getElementsByTagName('input')[0];
     inputEl.addEventListener('focusout', e => {
@@ -4362,7 +4362,7 @@ module.exports = class MessageLoggerV2 {
     this.createModal(
       {
         confirmText: 'Clear log',
-        cancelText: 'Sens de tri : ' + (!this.settings.reverseOrder ? 'Nouveau - Ancien' : 'Ancien - Nouveau'),
+        cancelText: 'Sort direction: ' + (!this.settings.reverseOrder ? 'new - old' : 'old - new'),
         header: ZeresPluginLibrary.ReactTools.createWrappedElement([this.createTextBox(), this.createHeader()]),
         size: this.createModal.confirmationModal.Sizes.LARGE,
         children: [ZeresPluginLibrary.ReactTools.createWrappedElement([messagesDIV])],
@@ -4418,7 +4418,7 @@ module.exports = class MessageLoggerV2 {
       const newItems = [];
       const addElement = (label, action, options = {}) => newItems.push({ label, action, ...options });
 
-      addElement('Open Logs', () => this.openWindow());
+      addElement('Ouvrir les Logs', () => this.openWindow());
 
       const messageId = props.message.id;
       const channelId = props.channel.id;
