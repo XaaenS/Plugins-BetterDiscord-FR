@@ -1,7 +1,7 @@
 /**
  * @name MessageLogger
  * @version 1.8.25
- * @source https://github.com/XaaenS/Plugins-Discord/tree/main
+ * @source https://github.com/XaaenS/Plugins-BetterDiscord/tree/main
  */
 /*@cc_on
 @if (@_jscript)
@@ -37,7 +37,7 @@ const MLV2_TYPE_L3 = Symbol('MLV2_TYPE_L3');
 
 module.exports = class MessageLoggerV2 {
   getName() {
-    return 'MessageLogger';
+    return 'MessageLoggerV2';
   }
   getVersion() {
     return '1.8.25';
@@ -216,14 +216,14 @@ module.exports = class MessageLoggerV2 {
       dontSaveData: false,
       displayUpdateNotes: true,
       ignoreMutedGuilds: true,
-      ignoreMutedChannels: false,
+      ignoreMutedChannels: true,
       ignoreBots: true,
       ignoreSelf: false,
-      ignoreBlockedUsers: false,
+      ignoreBlockedUsers: true,
       ignoreNSFW: false,
       ignoreLocalEdits: false,
       ignoreLocalDeletes: false,
-      alwaysLogGhostPings: true,
+      alwaysLogGhostPings: false,
       showOpenLogsButton: true,
       messageCacheCap: 1000,
       savedMessagesCap: 1000,
@@ -261,8 +261,8 @@ module.exports = class MessageLoggerV2 {
       maxShownEdits: 0,
       hideNewerEditsFirst: true,
       displayDates: true,
-      deletedMessageColor: "#00c4b3",
-      editedMessageColor: "#04b45f",
+      deletedMessageColor: '',
+      editedMessageColor: '',
       useAlternativeDeletedStyle: false,
       showEditedMessages: true,
       showDeletedMessages: true,
@@ -272,7 +272,7 @@ module.exports = class MessageLoggerV2 {
       alwaysLogSelected: true,
       alwaysLogDM: true,
       restoreDeletedMessages: true,
-      contextmenuSubmenuName: 'Logs',
+      contextmenuSubmenuName: 'Message Logger',
       streamSafety: {
         showEdits: false,
         showDeletes: false,
@@ -739,7 +739,7 @@ module.exports = class MessageLoggerV2 {
       (this.style.css = !this.settings.obfuscateCSSClasses ? 'ML2-CSS' : this.randomString()),
       `
                 .${this.style.deleted} .${this.classes.markup}, .${this.style.deleted} .${this.classes.markup} .hljs, .${this.style.deleted} .container-1ov-mD *{
-                    color: #00c4b3 !important;
+                    color: #f04747 !important;
                 }
                 html #app-mount .${this.style.deletedAlt} {
                   background-color: rgba(240, 71, 71, 0.15) !important;
@@ -1039,7 +1039,7 @@ module.exports = class MessageLoggerV2 {
       this.menu.filter = `channel:${this.selectedChannel.id}`;
       this.openWindow();
     });
-    new ZeresPluginLibrary.Tooltip(this.channelLogButton, 'Ouvrir les logs', { side: 'bottom' });
+    new ZeresPluginLibrary.Tooltip(this.channelLogButton, 'Open Logs', { side: 'bottom' });
 
     if (this.settings.showOpenLogsButton) this.addOpenLogsButton();
 
@@ -1272,70 +1272,70 @@ module.exports = class MessageLoggerV2 {
     // );
     list.push(
       this.createGroup({
-        name: 'Ignoré et remplacé',
+        name: 'Ignores and overrides',
         id: this.obfuscatedClass('ml2-settings-ignores-overrides'),
         collapsible: true,
         shown: false,
         settings: [
           {
-            name: 'Ignorer les serveurs en sourdine',
+            name: 'Ignore muted servers',
             id: 'ignoreMutedGuilds',
             type: 'switch'
           },
           {
-            name: 'Ignorer les chaînes en sourdine',
+            name: 'Ignore muted channels',
             id: 'ignoreMutedChannels',
             type: 'switch'
           },
           {
-            name: 'Ignorer les bots',
+            name: 'Ignore bots',
             id: 'ignoreBots',
             type: 'switch'
           },
           {
-            name: 'Ignorer les messages postés par vous',
+            name: 'Ignore messages posted by you',
             id: 'ignoreSelf',
             type: 'switch'
           },
           {
-            name: 'Ignorer les messages édités par vous',
+            name: 'Ignore message edits from you',
             id: 'ignoreLocalEdits',
             type: 'switch'
           },
           {
-            name: 'Ignorer les messages supprimés par vous',
+            name: 'Ignore message deletes from you',
             note: 'Only ignores if you delete your own message.',
             id: 'ignoreLocalDeletes',
             type: 'switch'
           },
           {
-            name: 'Ignorer les utilisateurs bloqués',
+            name: 'Ignore blocked users',
             id: 'ignoreBlockedUsers',
             type: 'switch'
           },
           {
-            name: 'Ignorer les chaînes NSFW',
+            name: 'Ignore NSFW channels',
             id: 'ignoreNSFW',
             type: 'switch'
           },
           {
-            name: 'Liste blanche des journaux uniquement',
+            name: 'Only log whitelist',
             id: 'onlyLogWhitelist',
             type: 'switch'
           },
           {
-            name: 'Toujours enregistrer le canal sélectionné, indépendamment de la liste blanche ou noire.',
+            name: 'Always log selected channel, regardless of whitelist/blacklist',
             id: 'alwaysLogSelected',
             type: 'switch'
           },
           {
-            name: 'Toujours enregistrer les DM, indépendamment de la liste blanche ou de la liste noire.',
+            name: 'Always log DMs, regardless of whitelist/blacklist',
             id: 'alwaysLogDM',
             type: 'switch'
           },
           {
-            name: 'Toujours enregistrer les pings fantômes, indépendamment de la liste blanche ou noire.',
-            note: 'Les messages envoyés aux serveurs et canaux ignorés/mutés/blacklistés seront enregistrés et affichés dans les messages envoyés, mais ne seront sauvegardés que si un ping fantôme se produit.',
+            name: 'Always log ghost pings, regardless of whitelist/blacklist',
+            note: 'Messages sent in ignored/muted/blacklisted servers and channels will be logged and shown in sent, but only gets saved if a ghost ping occurs.',
             id: 'alwaysLogGhostPings',
             type: 'switch'
           }
@@ -1344,13 +1344,13 @@ module.exports = class MessageLoggerV2 {
     );
     list.push(
       this.createGroup({
-        name: 'Paramètres d affichage',
+        name: 'Display settings',
         id: this.obfuscatedClass('ml2-settings-display'),
         collapsible: true,
         shown: false,
         settings: [
           {
-            name: 'Afficher les dates avec les horodatages',
+            name: 'Display dates with timestamps',
             id: 'displayDates',
             type: 'switch',
             callback: () => {
@@ -1362,7 +1362,7 @@ module.exports = class MessageLoggerV2 {
             }
           },
           {
-            name: 'Afficher les messages supprimés dans le chat',
+            name: 'Display deleted messages in chat',
             id: 'showDeletedMessages',
             type: 'switch',
             callback: () => {
@@ -1371,13 +1371,13 @@ module.exports = class MessageLoggerV2 {
             }
           },
           {
-            name: 'Afficher les messages édités dans le chat',
+            name: 'Display edited messages in chat',
             id: 'showEditedMessages',
             type: 'switch',
             callback: () => this.dispatcher.dispatch({ type: 'MLV2_FORCE_UPDATE_MESSAGE_CONTENT' })
           },
           {
-            name: 'Nombre maximum d éditions affichées',
+            name: 'Max number of shown edits',
             id: 'maxShownEdits',
             type: 'textbox',
             onChange: val => {
@@ -1387,19 +1387,19 @@ module.exports = class MessageLoggerV2 {
             }
           },
           {
-            name: 'Afficher l édition la plus ancienne au lieu de la plus récente si la limite d édition affichée est dépassée',
+            name: 'Show oldest edit instead of newest if over the shown edits limit',
             id: 'hideNewerEditsFirst',
             type: 'switch',
             callback: () => this.dispatcher.dispatch({ type: 'MLV2_FORCE_UPDATE_MESSAGE_CONTENT' })
           },
           {
-            name: 'Utiliser un arrière-plan rouge au lieu d un texte bleu pour les messages supprimés',
+            name: 'Use red background instead of red text for deleted messages',
             id: 'useAlternativeDeletedStyle',
             type: 'switch',
             callback: () => this.dispatcher.dispatch({ type: 'MLV2_FORCE_UPDATE_MESSAGE' })
           },
           {
-            name: 'Afficher les messages purgés dans le chat',
+            name: 'Display purged messages in chat',
             id: 'showPurgedMessages',
             type: 'switch',
             callback: () => {
@@ -1408,7 +1408,7 @@ module.exports = class MessageLoggerV2 {
             }
           },
           {
-            name: 'Restaurer les messages supprimés après un rechargement',
+            name: 'Restore deleted messages after reload',
             id: 'restoreDeletedMessages',
             type: 'switch',
             callback: val => {
@@ -1419,17 +1419,17 @@ module.exports = class MessageLoggerV2 {
             }
           },
           {
-            name: 'Afficher le nombre de nouveaux messages supprimés lors de l entrée dans un canal',
+            name: 'Show amount of new deleted messages when entering a channel',
             id: 'showDeletedCount',
             type: 'switch'
           },
           {
-            name: 'Afficher le nombre de nouveaux messages édités lors de l entrée dans un canal',
+            name: 'Show amount of new edited messages when entering a channel',
             id: 'showEditedCount',
             type: 'switch'
           },
           {
-            name: 'Afficher les notes de mise à jour',
+            name: 'Display update notes',
             id: 'displayUpdateNotes',
             type: 'switch'
           },
@@ -1449,8 +1449,8 @@ module.exports = class MessageLoggerV2 {
             ]
           },
           {
-            name: 'Utiliser les notifications XenoLib au lieu des toasts',
-            note: "Cela fonctionne pour les toasts d'édition, d'envoi, de suppression et de purge, ainsi que pour les toasts de suppression et d'édition du nombre de toasts. Basculez si vous ne savez pas ce que cela fait.",
+            name: 'Use XenoLib notifications instead of toasts',
+            note: "This works for edit, send, delete and purge toasts, as well as delete and edit count toasts. Toggle it if you don't know what this does.",
             id: 'useNotificationsInstead',
             type: 'switch',
             callback: e => (e ? XenoLib.Notifications.success('Using Xenolib notifications', { timeout: 5000 }) : this.showToast('Using toasts', { type: 'success', timeout: 5000 }))
@@ -1460,13 +1460,13 @@ module.exports = class MessageLoggerV2 {
     );
     list.push(
       this.createGroup({
-        name: 'Paramètres divers',
+        name: 'Misc settings',
         id: this.obfuscatedClass('ml2-settings-misc'),
         collapsible: true,
         shown: false,
         settings: [
           {
-            name: 'Désactive la sauvegarde des données. Les messages enregistrés sont effacés après le rechargement/redémarrage. Désactive la sauvegarde automatique.',
+            name: 'Disable saving data. Logged messages are erased after reload/restart. Disables auto backup.',
             id: 'dontSaveData',
             type: 'switch',
             callback: val => {
@@ -1475,7 +1475,7 @@ module.exports = class MessageLoggerV2 {
             }
           },
           {
-            name: "Sauvegarde automatique des données (n'empêche pas totalement la perte de données, mais seulement la perte totale de données)",
+            name: "Auto backup data (won't fully prevent losing data, just prevent total data loss)",
             id: 'autoBackup',
             type: 'switch',
             callback: val => {
@@ -1489,23 +1489,23 @@ module.exports = class MessageLoggerV2 {
                             type: 'color'
                         }, */,
           {
-            name: 'Mise en cache agressive des messages (pour s assurer que nous disposons des données de tous les messages supprimés ou modifiés) ',
+            name: 'Aggresive message caching (makes sure we have the data of any deleted or edited messages)',
             id: 'aggresiveMessageCaching',
             type: 'switch'
           },
           {
-            name: 'Mettre en cache toutes les images en les stockant localement dans le dossier MLV2_IMAGE_CACHE à l intérieur du dossier plugins.',
+            name: 'Cache all images by storing them locally in the MLV2_IMAGE_CACHE folder inside the plugins folder',
             id: 'cacheAllImages',
             type: 'switch'
           },
           {
-            name: "Ne pas supprimer les images mises en cache",
-            note: "Si le message dont provient l'image est effacé des données, l'image mise en cache sera conservée. Vous devrez surveiller vous-même l'utilisation du disque !",
+            name: "Don't delete cached images",
+            note: "If the message the image is from is erased from data, the cached image will be kept. You'll have to monitor disk usage on your own!",
             id: 'dontDeleteCachedImages',
             type: 'switch'
           },
           {
-            name: 'Bouton d affichage des journaux ouverts à côté de la boîte de recherche en haut à droite dans les canaux',
+            name: 'Display open logs button next to the search box top right in channels',
             id: 'showOpenLogsButton',
             type: 'switch',
             callback: val => {
@@ -1514,7 +1514,7 @@ module.exports = class MessageLoggerV2 {
             }
           },
           {
-            name: 'Bloquer les notifications de modification de spam (si activé)',
+            name: 'Block spam edit notifications (if enabled)',
             id: 'blockSpamEdit',
             type: 'switch'
           }
@@ -1523,7 +1523,7 @@ module.exports = class MessageLoggerV2 {
     );
     list.push(
       this.createGroup({
-        name: 'Notifications de toasts pour les guildes',
+        name: 'Toast notifications for guilds',
         id: this.obfuscatedClass('ml2-settings-toast-guilds'),
         collapsible: true,
         shown: false,
@@ -1565,7 +1565,7 @@ module.exports = class MessageLoggerV2 {
             }
           },
           {
-            name: 'Désactiver les toasts pour l utilisateur local (vous-même)',
+            name: 'Disable toasts for local user (yourself)',
             id: 'disableToastsForLocal',
             type: 'switch',
             value: this.settings.toastToggles.disableToastsForLocal,
@@ -1579,13 +1579,13 @@ module.exports = class MessageLoggerV2 {
 
     list.push(
       this.createGroup({
-        name: 'Notifications de toasts pour les DM',
+        name: 'Toast notifications for DMs',
         id: this.obfuscatedClass('ml2-settings-toast-dms'),
         collapsible: true,
         shown: false,
         settings: [
           {
-            name: 'Message envoyé',
+            name: 'Message sent',
             id: 'sent',
             type: 'switch',
             value: this.settings.toastTogglesDMs.sent,
@@ -1603,7 +1603,7 @@ module.exports = class MessageLoggerV2 {
             }
           },
           {
-            name: 'Message supprimé',
+            name: 'Message deleted',
             id: 'deleted',
             type: 'switch',
             value: this.settings.toastTogglesDMs.deleted,
@@ -1626,14 +1626,14 @@ module.exports = class MessageLoggerV2 {
 
     list.push(
       this.createGroup({
-        name: 'Message en majuscules',
+        name: 'Message caps',
         id: this.obfuscatedClass('ml2-settings-caps'),
         collapsible: true,
         shown: false,
         settings: [
           {
-            name: 'Message en majuscules caché',
-            note: 'Nombre maximum de messages envoyés dont l enregistreur doit garder la trace',
+            name: 'Cached messages cap',
+            note: 'Max number of sent messages logger should keep track of',
             id: 'messageCacheCap',
             type: 'textbox',
             onChange: val => {
@@ -1646,8 +1646,8 @@ module.exports = class MessageLoggerV2 {
             }
           },
           {
-            name: 'Message en majuscules sauvegardé',
-            note: "Nombre maximum de messages sauvegardés sur le disque, cette limite s applique aux messages supprimés, édités et purgés INDIVIDUELLEMENT. Ainsi, si la limite est fixée à 1000, il s agira de 1000 modifications, 1000 suppressions et 1000 messages purgés au maximum.",
+            name: 'Saved messages cap',
+            note: "Max number of messages saved to disk, this limit is for deleted, edited and purged INDIVIDUALLY. So if you have it set to 1000, it'll be 1000 edits, 1000 deletes and 1000 purged messages max",
             id: 'savedMessagesCap',
             type: 'textbox',
             onChange: val => {
@@ -1660,8 +1660,8 @@ module.exports = class MessageLoggerV2 {
             }
           },
           {
-            name: 'Message de menu',
-            note: 'Combien de messages s affichent avant que le bouton CHARGER PLUS ne s affiche ?',
+            name: 'Menu message render cap',
+            note: 'How many messages will show before the LOAD MORE button will show',
             id: 'renderCap',
             type: 'textbox',
             onChange: val => {
@@ -1676,13 +1676,13 @@ module.exports = class MessageLoggerV2 {
 
     list.push(
       this.createGroup({
-        name: 'Avancé',
+        name: 'Advanced',
         id: this.obfuscatedClass('ml2-settings-advanced'),
         collapsible: true,
         shown: false,
         settings: [
           {
-            name: 'Obfusquer les classes CSS',
+            name: 'Obfuscate CSS classes',
             note: 'Enable this if some plugin, library or theme is blocking you from using the plugin',
             id: 'obfuscateCSSClasses',
             type: 'switch'
@@ -1705,8 +1705,8 @@ module.exports = class MessageLoggerV2 {
             }
           },
           {
-            name: 'Nom du sous-menu du menu contextuel',
-            note: "Au lieu de dire Message Logger, dites quelque chose d'autre, de façon à ce que ce soit adapté aux captures d'écran.",
+            name: 'Contextmenu submenu name',
+            note: "Instead of saying Message Logger, make it say something else, so it's screenshot friendly",
             id: 'contextmenuSubmenuName',
             type: 'textbox'
           } /* ,
@@ -1750,7 +1750,20 @@ module.exports = class MessageLoggerV2 {
     const div = document.createElement('div');
     div.id = this.obfuscatedClass('ml2-settings-buttonbox');
     div.style.display = 'inline-flex';
+    div.appendChild(this.createButton('Changelog', () => XenoLib.showChangelog(`${this.getName()} has been updated!`, this.getVersion(), this.getChanges())));
     div.appendChild(this.createButton('Stats', () => this.showStatsModal()));
+    div.appendChild(this.createButton('Donate', () => this.nodeModules.electron.shell.openExternal('https://paypal.me/lighty13')));
+    div.appendChild(
+      this.createButton('Support server', () => {
+        ZeresPluginLibrary.DiscordModules.LayerManager.popLayer();
+        if (this.tools.getServer('389049952732446731')) {
+          ZeresPluginLibrary.DiscordModules.GuildActions.transitionToGuildSync('389049952732446731');
+        } else {
+          ZeresPluginLibrary.DiscordModules.InviteActions.openNativeAppModal('NYvWdN5');
+        }
+      })
+    );
+    div.appendChild(this.createButton('Help', () => this.showLoggerHelpModal()));
     let button = div.firstElementChild;
     while (button) {
       button.style.marginRight = button.style.marginLeft = `5px`;
@@ -2165,6 +2178,108 @@ module.exports = class MessageLoggerV2 {
   removeOpenLogsButton() {
     this.channelLogButton.remove();
   }
+  showLoggerHelpModal(initial = false) {
+    this.createModal({
+      confirmText: 'OK',
+      header: 'Logs aide',
+      size: this.createModal.confirmationModal.Sizes.LARGE,
+      children: [
+        ZeresPluginLibrary.ReactTools.createWrappedElement([
+          this.parseHTML(
+            `<div class="${this.multiClasses.defaultColor}" style="max-height: 0; min-height: 60vh;">
+                               ${initial ? '</br><span style="font-size: 40px;">As you are a <strong>first time user</strong>, you must know in order to have a server be logged, you must <strong>RIGHT CLICK</strong> a server or channel and add it to the whitelist.</br>Alternatively if this behavior is unwanted, you can always log all unmuted servers and channels by disabling <strong>Only log whitelist</strong> in logger settings under <strong>IGNORES AND OVERRIDES</strong>.</span></br></br>' : ''}
+                               Bonjour! C'est le ${this.getName()} aide modale ! Vous pouvez à tout moment l'ouvrir dans les paramètres du plugin en cliquant sur le bouton d'aide, ou dans le menu en appuyant sur le bouton point d'interrogation puis sur le bouton d'aide de Logger.</br>
+                               <strong>Menu:</strong></br></br>
+                                <div class="${this.style.textIndent}">
+                                    SUPPRIMER + CLIQUE GAUCHE :</br>
+                                    <div class="${this.style.textIndent}">
+                                      Cliquer sur un message, supprime le message</br>
+                                      Cliquer sur une modification supprime cette modification spécifique</br>
+                                      Cliquer sur l'horodatage supprime tous les messages de ce groupe de messages
+                                    </div></br>
+                                    CLIQUE DROIT:</br>
+                                    <div class="${this.style.textIndent}">
+                                    Un clic droit sur l'horodatage ouvre les options pour l'ensemble du groupe de messages
+                                    </div></br>
+                                </div>
+                                <strong>Toasts :</strong></br>
+                                <div class="${this.style.textIndent}">
+                                    Remarque : Les petites « notifications » dans Discord qui vous indiquent si un message a été modifié, supprimé, purgé, etc. sont appelées Toasts !</br></br>
+                                    CLIQUE GAUCHE :</br>
+                                    <div class="${this.style.textIndent}">
+                                    Ouvre le menu avec l'onglet correspondant</br>
+                                    </div></br>
+                                    CLIQUE DROIT:</br>
+                                    <div class="${this.style.textIndent}">
+                                         Passe au message pertinent dans le canal concerné
+                                    </div></br>
+                                    CLIC-MILIEU/ROUE DE DÉFILEMENT-CLIC:</br>
+                                    <div class="${this.style.textIndent}">
+                                    Rejette/ferme uniquement le Toast.
+                                    </div></br>
+                                </div>
+                                <strong>Notifications:</strong></br>
+                                <div class="${this.style.textIndent}">
+                                Remarque : elles s'affichent dans le coin supérieur droit et sont appelées notifications XenoLib. Peut être activé dans Paramètres > Paramètres d'affichage, tout en bas.</br></br>
+                                    CLIQUE GAUCHE:</br>
+                                    <div class="${this.style.textIndent}">
+                                    Ouvre le menu avec l'onglet correspondant</br>
+                                    </div></br>
+                                    CLIQUE DROIT:</br>
+                                    <div class="${this.style.textIndent}">
+                                    Passe au message pertinent dans le canal concerné
+                                    </div></br>
+                                </div>
+                                <strong>Ouvrir le bouton Journaux (en haut à droite à côté de la recherche):</strong></br>
+                                <div class="${this.style.textIndent}">
+                                    CLIQUE GAUCHE:</br>
+                                    <div class="${this.style.textIndent}">
+                                        Ouvrir le menu</br>
+                                    </div></br>
+                                    RIGHT-CLICK:</br>
+                                    <div class="${this.style.textIndent}">
+                                        Opens filtered menu that only shows messages from selected channel</br>
+                                    </div></br>
+                                </div>
+                                <strong>Whitelist/blacklist, ignores and overrides:</strong></br>
+                                <div class="${this.style.textIndent}">
+                                    WHITELIST-ONLY:</br>
+                                    <div class="${this.style.textIndent}">
+                                        All servers are ignored unless whitelisted</br>
+                                        Muted channels in whitelisted servers are ignored unless whitelisted or "Ignore muted channels" is disabled</br>
+                                        All channels in whitelisted servers are logged unless blacklisted, or muted and "Ignore muted channels" is enabled
+                                    </div></br>
+                                    DEFAULT:</br>
+                                    <div class="${this.style.textIndent}">
+                                        All servers are logged unless blacklisted or muted and "Ignore muted servers" is enabled</br>
+                                        Muted channels are ignored unless whitelisted or "Ignore muted channels" is disabled</br>
+                                        Muted servers are ignored unless whitelisted or "Ignore muted servers" is disabled</br>
+                                        Whitelisted channels in muted or blacklisted servers are logged</br>
+                                    </div></br>
+                                    ALL:</br>
+                                    <div class="${this.style.textIndent}">
+                                        Whitelisted channels in blacklisted servers are logged</br>
+                                        Blacklisted channels in whitelisted servers are ignored</br>
+                                        "Always log selected channel" overrides blacklist, whitelist-only mode, NSFW channel ignore, mute</br>
+                                        "Always log DMs" overrides blacklist as well as whitelist-only mode</br>
+                                        Channels marked NSFW and not whitelisted are ignored unless "Ignore NSFW channels" is disabled
+                                    </div></br>
+                                </div>
+                                <strong>Chat:</strong></br>
+                                <div class="${this.style.textIndent}">
+                                    RIGHT-CLICK:</br>
+                                    <div class="${this.style.textIndent}">
+                                        Right-clicking an edit (darkened text) allows you to delete that edit, or hide edits</br>
+                                        Right-clicking on a edited or deleted message gives you the option to hide the deleted message or hide or unhide edits, remove the edited or deleted message from log and remove deleted tint which makes the message look like it isn't deleted.
+                                    </div></br>
+                                </div>
+                            </div>`
+          )
+        ])
+      ],
+      red: false
+    });
+  }
   showStatsModal() {
     const elements = [];
     let totalMessages = Object.keys(this.messageRecord).length;
@@ -2201,10 +2316,10 @@ module.exports = class MessageLoggerV2 {
     const addLine = (name, value) => {
       elements.push(this.parseHTML(`<div class="${this.multiClasses.defaultColor}"><strong>${name}</strong>: ${value}</div></br>`));
     };
-    addLine('Total des messages', totalMessages);
-    addLine('Nombre de messages supprimés', messageCounts[0]);
-    addLine('Nombre de messages édités', messageCounts[1]);
-    addLine('Nombre de messages envoyés', this.cachedMessageRecord.length);
+    addLine('Total messages', totalMessages);
+    addLine('Deleted message count', messageCounts[0]);
+    addLine('Edited message count', messageCounts[1]);
+    addLine('Sent message count', this.cachedMessageRecord.length);
 
     let channel = this.tools.getChannel(mostDeletesChannel.id);
     if (channel) addLine('Most deletes', mostDeletesChannel.num + ' ' + this.getLiteralName(channel.guild_id, channel.id));
@@ -2214,7 +2329,7 @@ module.exports = class MessageLoggerV2 {
     //  addLine('Data file size severity', this.slowSaveModeStep == 0 ? 'OK' : this.slowSaveModeStep == 1 ? 'MILD' : this.slowSaveModeStep == 2 ? 'BAD' : 'EXTREME');
     this.createModal({
       confirmText: 'OK',
-      header: 'Données statistiques',
+      header: 'Data stats',
       size: ZeresPluginLibrary.Modals.ModalSizes.SMALL,
       children: [ZeresPluginLibrary.ReactTools.createWrappedElement(elements)],
       red: false
@@ -2668,9 +2783,9 @@ module.exports = class MessageLoggerV2 {
           }
 
           if ((!this.selectedChannel || this.selectedChannel.id != channel.id) && (guild ? this.settings.toastToggles.ghostPings : this.settings.toastTogglesDMs.ghostPings)) {
-            XenoLib.Notifications.warning(`Tu as été ghost ping ici : ${this.getLiteralName(channel.guild_id, channel.id, true)}`, { timeout: 0, onClick: () => this.openWindow('ghostpings'), onContext: () => this.jumpToMessage(dispatch.channelId, dispatch.id, guild && guild.id), channelId: channel.id });
+            XenoLib.Notifications.warning(`You got ghost pinged in ${this.getLiteralName(channel.guild_id, channel.id, true)}`, { timeout: 0, onClick: () => this.openWindow('ghostpings'), onContext: () => this.jumpToMessage(dispatch.channelId, dispatch.id, guild && guild.id), channelId: channel.id });
             if (!this.settings.useNotificationsInstead) {
-              this.showToast(`Tu as été ghost ping ici : ${this.getLiteralName(channel.guild_id, channel.id)}`, {
+              this.showToast(`You got ghost pinged in ${this.getLiteralName(channel.guild_id, channel.id)}`, {
                 type: 'warning',
                 onClick: () => this.openWindow('ghostpings'),
                 onContext: () => this.jumpToMessage(dispatch.channelId, dispatch.id, guild && guild.id),
@@ -2739,17 +2854,17 @@ module.exports = class MessageLoggerV2 {
         if (!notificationsBlacklisted) {
           if (guild ? this.settings.toastToggles.deleted && ((isLocalUser && !this.settings.toastToggles.disableToastsForLocal) || !isLocalUser) : this.settings.toastTogglesDMs.deleted && !isLocalUser) {
             if (this.settings.useNotificationsInstead) {
-              XenoLib.Notifications.danger(`Un message a été supprimé ici : ${this.getLiteralName(channel.guild_id, channel.id, true)}`, {
+              XenoLib.Notifications.danger(`Message deleted from ${this.getLiteralName(channel.guild_id, channel.id, true)}`, {
                 onClick: () => this.openWindow('deleted'),
                 onContext: () => this.jumpToMessage(dispatch.channelId, dispatch.id, guild && guild.id),
-                timeout: 9000
+                timeout: 4500
               });
             } else {
-              this.showToast(`Un message a été supprimé ici : ${this.getLiteralName(channel.guild_id, channel.id)}`, {
+              this.showToast(`Message deleted from ${this.getLiteralName(channel.guild_id, channel.id)}`, {
                 type: 'error',
                 onClick: () => this.openWindow('deleted'),
                 onContext: () => this.jumpToMessage(dispatch.channelId, dispatch.id, guild && guild.id),
-                timeout: 9000
+                timeout: 4500
               });
             }
           }
@@ -2910,17 +3025,17 @@ module.exports = class MessageLoggerV2 {
             }
             if (this.settings.blockSpamEdit || !this.editHistoryAntiSpam[author.id].blocked) {
               if (this.settings.useNotificationsInstead) {
-                XenoLib.Notifications.info(`Un message a été modifié ici : ${this.getLiteralName(channel.guild_id, channel.id, true)}`, {
+                XenoLib.Notifications.info(`Message edited in ${this.getLiteralName(channel.guild_id, channel.id, true)}`, {
                   onClick: () => this.openWindow('edited'),
                   onContext: () => this.jumpToMessage(channel.id, dispatch.message.id, guild && guild.id),
-                  timeout: 9000
+                  timeout: 4500
                 });
               } else {
-                this.showToast(`Un message a été modifié ici : ${this.getLiteralName(channel.guild_id, channel.id)}`, {
+                this.showToast(`Message edited in ${this.getLiteralName(channel.guild_id, channel.id)}`, {
                   type: 'info',
                   onClick: () => this.openWindow('edited'),
                   onContext: () => this.jumpToMessage(channel.id, dispatch.message.id, guild && guild.id),
-                  timeout: 9000
+                  timeout: 4500
                 });
               }
             }
@@ -3088,7 +3203,7 @@ module.exports = class MessageLoggerV2 {
             ZeresPluginLibrary.DiscordModules.React.createElement(
               Tooltip,
               {
-                text: !!record.delete_data ? null : 'Modifié le : ' + this.createTimeStamp(edit.time),
+                text: !!record.delete_data ? null : 'Edited: ' + this.createTimeStamp(edit.time),
                 position: 'left',
                 hideOnClick: true
               },
@@ -3148,7 +3263,7 @@ module.exports = class MessageLoggerV2 {
         ret.props.children.ref = e => {
           if (e && !e.__tooltip) {
             // later
-            new ZeresPluginLibrary.Tooltip(e, 'Supprimé le : ' + _self.tools.createMomentObject(props.__MLV2_deleteTime).format('LLLL'), { side: 'left' });
+            new ZeresPluginLibrary.Tooltip(e, 'Deleted: ' + _self.tools.createMomentObject(props.__MLV2_deleteTime).format('LLLL'), { side: 'left' });
             e.__tooltip = true;
           }
           if (typeof oRef === 'function') return oRef(e);
@@ -3911,7 +4026,7 @@ module.exports = class MessageLoggerV2 {
     if (!messages.length) {
       const strong = document.createElement('strong');
       strong.className = this.multiClasses.defaultColor;
-      strong.innerText = "Ne vous inquiétez pas, l'enregistreur n'est pas cassé ! Il n'y a tout simplement rien d'enregistré dans l'onglet sélectionné";
+      strong.innerText = "Ne vous inquiétez pas, l'enregistreur n'est pas cassé ! Il n'y a tout simplement rien d'enregistré dans l'onglet sélectionné.";
       parent.appendChild(strong);
     }
   }
@@ -3959,10 +4074,10 @@ module.exports = class MessageLoggerV2 {
         messages.push(i.id);
       }
     }
-    if (this.menu.selectedTab == 'edited') pushIdsIntoMessages(this.editedMessageRecord);
-    if (this.menu.selectedTab == 'deleted') pushIdsIntoMessages(this.deletedMessageRecord);
-    if (this.menu.selectedTab == 'purged') pushIdsIntoMessages(this.purgedMessageRecord);
-    if (this.menu.selectedTab == 'ghostpings') {
+    if (this.menu.selectedTab == 'Modifié') pushIdsIntoMessages(this.editedMessageRecord);
+    if (this.menu.selectedTab == 'Supprimé') pushIdsIntoMessages(this.deletedMessageRecord);
+    if (this.menu.selectedTab == 'Purgé') pushIdsIntoMessages(this.purgedMessageRecord);
+    if (this.menu.selectedTab == 'Ghost Pings') {
       checkIsMentioned(this.deletedMessageRecord);
       checkIsMentioned(this.editedMessageRecord);
       checkIsMentioned(this.purgedMessageRecord);
@@ -4089,7 +4204,7 @@ module.exports = class MessageLoggerV2 {
     tabs.appendChild(createTab('Supprimé', 'deleted'));
     tabs.appendChild(createTab('Modifié', 'edited'));
     tabs.appendChild(createTab('Purgé', 'purged'));
-    tabs.appendChild(createTab('Ghost Pings', 'ghostpings'));
+    tabs.appendChild(createTab('Ghost pings', 'ghostpings'));
     tabBar.style.marginRight = '20px';
     return tabBar;
   }
@@ -4122,7 +4237,7 @@ module.exports = class MessageLoggerV2 {
     }
     const classes = this.createTextBox.classes;
     let textBox = this.parseHTML(
-      `<div class="${classes.inputWrapper}"><div class="${classes.inputMultiInput}"><div class="${classes.inputWrapper} ${classes.multiInputFirst}"><input class="${classes.inputDefaultMultiInputField}" name="username" type="text" placeholder="Rechercher un message particulier" maxlength="999" value="${this.menu.filter}" id="${this.style.filter}"></div><span tabindex="0" class="${classes.questionMark}" role="button"><svg name="QuestionMark" class="${classes.icon}" aria-hidden="false" width="16" height="16" viewBox="0 0 24 24"><g fill="currentColor" fill-rule="evenodd" transform="translate(7 4)"><path d="M0 4.3258427C0 5.06741573.616438356 5.68539326 1.35616438 5.68539326 2.09589041 5.68539326 2.71232877 5.06741573 2.71232877 4.3258427 2.71232877 2.84269663 4.31506849 2.78089888 4.5 2.78089888 4.68493151 2.78089888 6.28767123 2.84269663 6.28767123 4.3258427L6.28767123 4.63483146C6.28767123 5.25280899 5.97945205 5.74719101 5.42465753 6.05617978L4.19178082 6.73595506C3.51369863 7.10674157 3.14383562 7.78651685 3.14383562 8.52808989L3.14383562 9.64044944C3.14383562 10.3820225 3.76027397 11 4.5 11 5.23972603 11 5.85616438 10.3820225 5.85616438 9.64044944L5.85616438 8.96067416 6.71917808 8.52808989C8.1369863 7.78651685 9 6.30337079 9 4.69662921L9 4.3258427C9 1.48314607 6.71917808 0 4.5 0 2.21917808 0 0 1.48314607 0 4.3258427zM4.5 12C2.5 12 2.5 15 4.5 15 6.5 15 6.5 12 4.5 12L4.5 12z"></path></g></svg></span></div></div>`
+      `<div class="${classes.inputWrapper}"><div class="${classes.inputMultiInput}"><div class="${classes.inputWrapper} ${classes.multiInputFirst}"><input class="${classes.inputDefaultMultiInputField}" name="username" type="text" placeholder="Message filter" maxlength="999" value="${this.menu.filter}" id="${this.style.filter}"></div><span tabindex="0" class="${classes.questionMark}" role="button"><svg name="QuestionMark" class="${classes.icon}" aria-hidden="false" width="16" height="16" viewBox="0 0 24 24"><g fill="currentColor" fill-rule="evenodd" transform="translate(7 4)"><path d="M0 4.3258427C0 5.06741573.616438356 5.68539326 1.35616438 5.68539326 2.09589041 5.68539326 2.71232877 5.06741573 2.71232877 4.3258427 2.71232877 2.84269663 4.31506849 2.78089888 4.5 2.78089888 4.68493151 2.78089888 6.28767123 2.84269663 6.28767123 4.3258427L6.28767123 4.63483146C6.28767123 5.25280899 5.97945205 5.74719101 5.42465753 6.05617978L4.19178082 6.73595506C3.51369863 7.10674157 3.14383562 7.78651685 3.14383562 8.52808989L3.14383562 9.64044944C3.14383562 10.3820225 3.76027397 11 4.5 11 5.23972603 11 5.85616438 10.3820225 5.85616438 9.64044944L5.85616438 8.96067416 6.71917808 8.52808989C8.1369863 7.78651685 9 6.30337079 9 4.69662921L9 4.3258427C9 1.48314607 6.71917808 0 4.5 0 2.21917808 0 0 1.48314607 0 4.3258427zM4.5 12C2.5 12 2.5 15 4.5 15 6.5 15 6.5 12 4.5 12L4.5 12z"></path></g></svg></span></div></div>`
     );
     const inputEl = textBox.getElementsByTagName('input')[0];
     inputEl.addEventListener('focusout', e => {
@@ -4149,6 +4264,37 @@ module.exports = class MessageLoggerV2 {
     };
     inputEl.addEventListener('keyup', onUpdate); // maybe I can actually use keydown but it didn't work for me
     inputEl.addEventListener('paste', onUpdate);
+    const helpButton = textBox.getElementsByClassName(classes.questionMarkSingle)[0];
+    helpButton.addEventListener('click', () => {
+      const extraHelp = this.createButton('Logs aide', () => this.showLoggerHelpModal());
+      this.createModal({
+        confirmText: 'OK',
+        header: 'Filtrer l\'aide',
+        size: this.createModal.confirmationModal.Sizes.LARGE,
+        children: [
+          ZeresPluginLibrary.ReactTools.createWrappedElement([
+            this.parseHTML(
+              `<div class="${this.multiClasses.defaultColor}">"serveur: <servername or serverid>" - Filtrez les résultats avec le nom ou l'identifiant du serveur spécifié.
+                        "channel: <channelname or channelid>" - Filtrez les résultats avec le nom ou l'identifiant de canal spécifié.
+                        "Utilisateur: <username, nickname or userid>" - Filtrer les résultats avec le nom d'utilisateur, le pseudo ou l'ID utilisateur spécifié.
+                        "Message: <search or messageid>" ou "Contenu: <search or messageid>" - Filtrer les résultats avec le contenu du message spécifié.
+                      
+                        Séparez les balises de recherche par des virgules.
+                        Exemple : serveur : les trucs de Tom, message : diable
+
+
+                        Aide sur les raccourcis:
+
+                        "Ctrl + M" (par défaut) - Ouvrir le journal des messages.
+                        "Ctrl + N" (par défaut) - Ouvrir le journal des messages avec le canal sélectionné filtré.\n\n</div>`.replace(/\n/g, '</br>')
+            ),
+            extraHelp
+          ])
+        ],
+        red: false
+      });
+    });
+    new ZeresPluginLibrary.Tooltip(helpButton, 'Aide ! ', { side: 'top' });
     return textBox;
   }
   // >>-|| MENU MODAL CREATION ||-<<
@@ -4167,7 +4313,7 @@ module.exports = class MessageLoggerV2 {
     //messagesDIV.style.display = 'none';
     const onChangeOrder = el => {
       this.settings.reverseOrder = !this.settings.reverseOrder;
-      el.target.innerText = 'Trier : ' + (!this.settings.reverseOrder ? 'Nouveau - Ancien' : 'Ancien - Nouveau'); // maybe a func?
+      el.target.innerText = 'Sort direction: ' + (!this.settings.reverseOrder ? 'new - old' : 'old - new'); // maybe a func?
       this.saveSettings();
       this.refilterMessages();
     };
@@ -4215,8 +4361,8 @@ module.exports = class MessageLoggerV2 {
     };
     this.createModal(
       {
-        confirmText: 'Supprime les logs',
-        cancelText: 'Trier : ' + (!this.settings.reverseOrder ? 'Nouveau - Ancien' : 'Nouveau - Ancien'),
+        confirmText: 'Clear log',
+        cancelText: 'Sort direction: ' + (!this.settings.reverseOrder ? 'new - old' : 'old - new'),
         header: ZeresPluginLibrary.ReactTools.createWrappedElement([this.createTextBox(), this.createHeader()]),
         size: this.createModal.confirmationModal.Sizes.LARGE,
         children: [ZeresPluginLibrary.ReactTools.createWrappedElement([messagesDIV])],
@@ -4272,7 +4418,7 @@ module.exports = class MessageLoggerV2 {
       const newItems = [];
       const addElement = (label, action, options = {}) => newItems.push({ label, action, ...options });
 
-      addElement('Ouvrir les Logs', () => this.openWindow());
+      addElement('Open Logs', () => this.openWindow());
 
       const messageId = props.message.id;
       const channelId = props.channel.id;
@@ -4287,7 +4433,7 @@ module.exports = class MessageLoggerV2 {
           const options = menu.find(m => m.props.children && m.props.children.length > 10);
           options.props.children.splice(0, options.props.children.length);
           addElement(
-            'Cacher le message supprimé',
+            'Hide Deleted Message',
             () => {
               this.dispatcher.dispatch({
                 type: 'MESSAGE_DELETE',
@@ -4303,7 +4449,7 @@ module.exports = class MessageLoggerV2 {
           );
           const idx = this.noTintIds.indexOf(messageId);
           addElement(
-            `${idx !== -1 ? 'Add' : 'Retirer'} la couleur de suppression`,
+            `${idx !== -1 ? 'Add' : 'Remove'} Deleted Tint`,
             () => {
               if (idx !== -1) this.noTintIds.splice(idx, 1);
               else this.noTintIds.push(messageId);
@@ -4378,7 +4524,7 @@ module.exports = class MessageLoggerV2 {
         }
         if (record) {
           addElement(
-            'Supprimer des logs',
+            'Remove From Log',
             () => {
               this.deleteMessageFromRecords(messageId);
               this.saveData();
@@ -4490,7 +4636,7 @@ module.exports = class MessageLoggerV2 {
       const newItems = [];
       const addElement = (label, action, options = {}) => newItems.push({ label, action, ...options });
 
-      addElement('Oubrir les Logs', () => this.openWindow());
+      addElement('Open Logs', () => this.openWindow());
       addElement(
         `Open Log For Channel`,
         () => {
@@ -4520,7 +4666,7 @@ module.exports = class MessageLoggerV2 {
       const newItems = [];
       const addElement = (label, action, options = {}) => newItems.push({ label, action, ...options });
 
-      addElement('Ouvrir les Logs', () => this.openWindow());
+      addElement('Open Logs', () => this.openWindow());
 
       addElement(
         `Open Log For Guild`,
@@ -4551,7 +4697,7 @@ module.exports = class MessageLoggerV2 {
       const newItems = [];
       const addElement = (label, action, options = {}) => newItems.push({ label, action, ...options });
 
-      addElement('Ouvrir les Logs', () => this.openWindow());
+      addElement('Open Logs', () => this.openWindow());
       addElement(
         `Open Log For User`,
         () => {
@@ -4592,7 +4738,7 @@ module.exports = class MessageLoggerV2 {
       const newItems = [];
       const addElement = (label, action, options = {}) => newItems.push({ label, action, ...options });
 
-      addElement('Ouvrir les Logs', () => this.openWindow());
+      addElement('Open Logs', () => this.openWindow());
       addElement(
         `Open Log For Channel`,
         () => {
@@ -4733,7 +4879,7 @@ module.exports = class MessageLoggerV2 {
       );
       if (record.delete_data && record.delete_data.hidden) {
         addElement(
-          'Ne plus cacher le message supprimé',
+          'Unhide Deleted Message',
           () => {
             record.delete_data.hidden = false;
             this.invalidateChannelCache(record.message.channel_id); // good idea?
@@ -4758,7 +4904,7 @@ module.exports = class MessageLoggerV2 {
         );
       }
       addElement(
-        'Supprimer des logs',
+        'Remove From Log',
         () => {
           this.deleteMessageFromRecords(element.messageId);
           this.refilterMessages(); // I don't like calling that, maybe figure out a way to animate it collapsing on itself smoothly
@@ -4933,7 +5079,7 @@ module.exports = class MessageLoggerV2 {
             );
             if (record.delete_data && record.delete_data.hidden) {
               addElement(
-                'Ne plus cacher le message supprimé',
+                'Unhide Deleted Message',
                 () => {
                   record.delete_data.hidden = false;
                   this.invalidateChannelCache(record.message.channel_id); // good idea?
@@ -4958,7 +5104,7 @@ module.exports = class MessageLoggerV2 {
               );
             }
             addElement(
-              'Supprimer des logs',
+              'Remove From Log',
               () => {
                 this.deleteMessageFromRecords(element.messageId);
                 this.refilterMessages(); // I don't like calling that, maybe figure out a way to animate it collapsing on itself smoothly
@@ -5013,7 +5159,7 @@ module.exports = class MessageLoggerV2 {
             );
             if (!Array.isArray(menu)) return;
             const addElement = (label, callback, id, options = {}) => newItems.push(XenoLib.createContextMenuItem(label, callback, id, options));
-            addElement('Logs', () => this.openWindow(), this.obfuscatedClass('open'));
+            addElement('Open Logs', () => this.openWindow(), this.obfuscatedClass('open'));
             const messageId = props.message.id;
             const channelId = props.channel.id;
             const record = this.messageRecord[messageId];
@@ -5027,7 +5173,7 @@ module.exports = class MessageLoggerV2 {
                 const options = menu.find(m => m.props.children && m.props.children.length > 10);
                 options.props.children.splice(0, options.props.children.length);
                 addElement(
-                  'Cacher le message supprimé',
+                  'Hide Deleted Message',
                   () => {
                     this.dispatcher.dispatch({
                       type: 'MESSAGE_DELETE',
@@ -5125,7 +5271,7 @@ module.exports = class MessageLoggerV2 {
               }
               if (record) {
                 addElement(
-                  'Supprimer des logs',
+                  'Remove From Log',
                   () => {
                     this.deleteMessageFromRecords(messageId);
                     this.saveData();
@@ -5248,7 +5394,7 @@ module.exports = class MessageLoggerV2 {
           );
           if (!Array.isArray(menu)) return ret;
           const addElement = (label, callback, id, options = {}) => newItems.push(XenoLib.createContextMenuItem(label, callback, id, options));
-          addElement('Logs', () => _this.openWindow(), _this.obfuscatedClass('open'));
+          addElement('Open Logs', () => _this.openWindow(), _this.obfuscatedClass('open'));
           addElement(
             `Open Log For Channel`,
             () => {
@@ -5327,7 +5473,7 @@ module.exports = class MessageLoggerV2 {
           if (!Array.isArray(menu)) return;
           const addElement = (label, callback, id, options = {}) => newItems.push(XenoLib.createContextMenuItem(label, callback, id, options));
           addElement(
-            'Logs',
+            'Open Logs',
             () => {
               _this.openWindow();
             },
@@ -5389,7 +5535,7 @@ module.exports = class MessageLoggerV2 {
           if (!Array.isArray(menu)) return ret;
           const addElement = (label, callback, id, options = {}) => newItems.push(XenoLib.createContextMenuItem(label, callback, id, options));
           addElement(
-            'Logs',
+            'Open Logs',
             () => {
               _this.openWindow();
             },
@@ -5456,7 +5602,7 @@ module.exports = class MessageLoggerV2 {
           if (!Array.isArray(menu)) return ret;
           const addElement = (label, callback, id, options = {}) => newItems.push(XenoLib.createContextMenuItem(label, callback, id, options));
           addElement(
-            'Logs',
+            'Open Logs',
             () => {
               _this.openWindow();
             },
@@ -5530,7 +5676,7 @@ module.exports = class MessageLoggerV2 {
           );
           if (!Array.isArray(menu)) return ret;
           const addElement = (label, callback, id, options = {}) => newItems.push(XenoLib.createContextMenuItem(label, callback, id, options));
-          addElement('Logs', () => _this.openWindow(), _this.obfuscatedClass('open'));
+          addElement('Open Logs', () => _this.openWindow(), _this.obfuscatedClass('open'));
           addElement(
             `Open Log For Channel`,
             () => {
