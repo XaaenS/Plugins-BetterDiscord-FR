@@ -1,5 +1,5 @@
 /**
- * @name MessageLoggerV2
+ * @name MessageLogger
  * @version 1.8.25
  * @source https://github.com/XaaenS/Plugins-BetterDiscord/tree/main
  */
