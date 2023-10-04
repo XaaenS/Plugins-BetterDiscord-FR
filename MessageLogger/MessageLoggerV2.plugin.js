@@ -1632,8 +1632,8 @@ module.exports = class MessageLoggerV2 {
         shown: false,
         settings: [
           {
-            name: 'Plafond des messages mis en cache',
-            note: 'Max number of sent messages logger should keep track of',
+            name: 'Message en majuscule cacher',
+            note: 'L\'enregistreur du nombre maximum de messages envoyés doit garder une trace',
             id: 'messageCacheCap',
             type: 'textbox',
             onChange: val => {
@@ -1646,8 +1646,8 @@ module.exports = class MessageLoggerV2 {
             }
           },
           {
-            name: 'Saved messages cap',
-            note: "Max number of messages saved to disk, this limit is for deleted, edited and purged INDIVIDUALLY. So if you have it set to 1000, it'll be 1000 edits, 1000 deletes and 1000 purged messages max",
+            name: 'Message enregsitré',
+            note: "Nombre maximum de messages enregistrés sur le disque, cette limite concerne les messages supprimés, modifiés et purgés INDIVIDUELLEMENT. Donc, si vous l'avez défini sur 1 000, cela fera 1 000 modifications, 1 000 suppressions et 1 000 messages purgés maximum.",
             id: 'savedMessagesCap',
             type: 'textbox',
             onChange: val => {
@@ -1659,17 +1659,6 @@ module.exports = class MessageLoggerV2 {
               }, 60 * 1000 * 5);
             }
           },
-          {
-            name: 'Menu message render cap',
-            note: 'How many messages will show before the LOAD MORE button will show',
-            id: 'renderCap',
-            type: 'textbox',
-            onChange: val => {
-              if (isNaN(val)) return this.showToast('Value must be a number!', { type: 'error' });
-              this.settings.renderCap = parseInt(val);
-              clearInterval(this.dataManagerInterval);
-            }
-          }
         ]
       })
     );
