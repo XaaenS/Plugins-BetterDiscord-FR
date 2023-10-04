@@ -4362,7 +4362,7 @@ module.exports = class MessageLoggerV2 {
     this.createModal(
       {
         confirmText: 'Clear log',
-        cancelText: 'Sort direction: ' + (!this.settings.reverseOrder ? 'new - old' : 'old - new'),
+        cancelText: 'Sens de tri : ' + (!this.settings.reverseOrder ? 'Nouveau - Ancien' : 'Ancien - Nouveau'),
         header: ZeresPluginLibrary.ReactTools.createWrappedElement([this.createTextBox(), this.createHeader()]),
         size: this.createModal.confirmationModal.Sizes.LARGE,
         children: [ZeresPluginLibrary.ReactTools.createWrappedElement([messagesDIV])],
