@@ -1272,18 +1272,18 @@ module.exports = class MessageLoggerV2 {
     // );
     list.push(
       this.createGroup({
-        name: 'Ignores and overrides',
+        name: 'Ignore et remplace',
         id: this.obfuscatedClass('ml2-settings-ignores-overrides'),
         collapsible: true,
         shown: false,
         settings: [
           {
-            name: 'Ignore muted servers',
+            name: 'Ignorer les serveurs mis en sourdine',
             id: 'ignoreMutedGuilds',
             type: 'switch'
           },
           {
-            name: 'Ignore muted channels',
+            name: 'Ignorer les channels muets',
             id: 'ignoreMutedChannels',
             type: 'switch'
           },
@@ -1344,7 +1344,7 @@ module.exports = class MessageLoggerV2 {
     );
     list.push(
       this.createGroup({
-        name: 'Display settings',
+        name: 'Paramètres d\'affichage',
         id: this.obfuscatedClass('ml2-settings-display'),
         collapsible: true,
         shown: false,
@@ -1377,7 +1377,7 @@ module.exports = class MessageLoggerV2 {
             callback: () => this.dispatcher.dispatch({ type: 'MLV2_FORCE_UPDATE_MESSAGE_CONTENT' })
           },
           {
-            name: 'Max number of shown edits',
+            name: 'Nombre maximum de modifications affichées',
             id: 'maxShownEdits',
             type: 'textbox',
             onChange: val => {
@@ -1460,7 +1460,7 @@ module.exports = class MessageLoggerV2 {
     );
     list.push(
       this.createGroup({
-        name: 'Misc settings',
+        name: 'Paramètres divers',
         id: this.obfuscatedClass('ml2-settings-misc'),
         collapsible: true,
         shown: false,
@@ -1523,7 +1523,7 @@ module.exports = class MessageLoggerV2 {
     );
     list.push(
       this.createGroup({
-        name: 'Toast notifications for guilds',
+        name: 'Notifications Toast pour les guildes',
         id: this.obfuscatedClass('ml2-settings-toast-guilds'),
         collapsible: true,
         shown: false,
@@ -1579,7 +1579,7 @@ module.exports = class MessageLoggerV2 {
 
     list.push(
       this.createGroup({
-        name: 'Toast notifications for DMs',
+        name: 'Notifications Toast pour les DM',
         id: this.obfuscatedClass('ml2-settings-toast-dms'),
         collapsible: true,
         shown: false,
@@ -1626,13 +1626,13 @@ module.exports = class MessageLoggerV2 {
 
     list.push(
       this.createGroup({
-        name: 'Message caps',
+        name: 'Message en majuscule',
         id: this.obfuscatedClass('ml2-settings-caps'),
         collapsible: true,
         shown: false,
         settings: [
           {
-            name: 'Cached messages cap',
+            name: 'Plafond des messages mis en cache',
             note: 'Max number of sent messages logger should keep track of',
             id: 'messageCacheCap',
             type: 'textbox',
@@ -1750,11 +1750,11 @@ module.exports = class MessageLoggerV2 {
     const div = document.createElement('div');
     div.id = this.obfuscatedClass('ml2-settings-buttonbox');
     div.style.display = 'inline-flex';
-    div.appendChild(this.createButton('Changelog', () => XenoLib.showChangelog(`${this.getName()} has been updated!`, this.getVersion(), this.getChanges())));
+    div.appendChild(this.createButton('Journal des modifications', () => XenoLib.showChangelog(`${this.getName()} has been updated!`, this.getVersion(), this.getChanges())));
     div.appendChild(this.createButton('Stats', () => this.showStatsModal()));
-    div.appendChild(this.createButton('Donate', () => this.nodeModules.electron.shell.openExternal('https://paypal.me/lighty13')));
+    //div.appendChild(this.createButton('Donate', () => this.nodeModules.electron.shell.openExternal('https://paypal.me/lighty13')));
     div.appendChild(
-      this.createButton('Support server', () => {
+      this.createButton('Support serveur', () => {
         ZeresPluginLibrary.DiscordModules.LayerManager.popLayer();
         if (this.tools.getServer('389049952732446731')) {
           ZeresPluginLibrary.DiscordModules.GuildActions.transitionToGuildSync('389049952732446731');
@@ -1763,7 +1763,7 @@ module.exports = class MessageLoggerV2 {
         }
       })
     );
-    div.appendChild(this.createButton('Help', () => this.showLoggerHelpModal()));
+    div.appendChild(this.createButton('Aide', () => this.showLoggerHelpModal()));
     let button = div.firstElementChild;
     while (button) {
       button.style.marginRight = button.style.marginLeft = `5px`;
