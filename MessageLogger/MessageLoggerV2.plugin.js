@@ -43,7 +43,7 @@ module.exports = class MessageLoggerV2 {
     return '1.8.25';
   }
   getAuthor() {
-    return 'Sneax';
+    return 'Sneax et Ralawette';
   }
   getDescription() {
     return 'Sauvegarde tous les messages supprimés et purgés, ainsi que l historique des modifications et les pings fantômes.Avec des options d ignorance hautement configurables, et même la restauration des messages supprimés après le redémarrage de Discord.';
@@ -272,7 +272,7 @@ module.exports = class MessageLoggerV2 {
       alwaysLogSelected: true,
       alwaysLogDM: true,
       restoreDeletedMessages: true,
-      contextmenuSubmenuName: 'Message Logger',
+      contextmenuSubmenuName: 'Logs',
       streamSafety: {
         showEdits: false,
         showDeletes: false,
@@ -1272,361 +1272,7 @@ module.exports = class MessageLoggerV2 {
     // );
     list.push(
       this.createGroup({
-        name: 'Ignores and overrides',
-        id: this.obfuscatedClass('ml2-settings-ignores-overrides'),
-        collapsible: true,
-        shown: false,
-        settings: [
-          {
-            name: 'Ignore muted servers',
-            id: 'ignoreMutedGuilds',
-            type: 'switch'
-          },
-          {
-            name: 'Ignore muted channels',
-            id: 'ignoreMutedChannels',
-            type: 'switch'
-          },
-          {
-            name: 'Ignore bots',
-            id: 'ignoreBots',
-            type: 'switch'
-          },
-          {
-            name: 'Ignore messages posted by you',
-            id: 'ignoreSelf',
-            type: 'switch'
-          },
-          {
-            name: 'Ignore message edits from you',
-            id: 'ignoreLocalEdits',
-            type: 'switch'
-          },
-          {
-            name: 'Ignore message deletes from you',
-            note: 'Only ignores if you delete your own message.',
-            id: 'ignoreLocalDeletes',
-            type: 'switch'
-          },
-          {
-            name: 'Ignore blocked users',
-            id: 'ignoreBlockedUsers',
-            type: 'switch'
-          },
-          {
-            name: 'Ignore NSFW channels',
-            id: 'ignoreNSFW',
-            type: 'switch'
-          },
-          {
-            name: 'Only log whitelist',
-            id: 'onlyLogWhitelist',
-            type: 'switch'
-          },
-          {
-            name: 'Always log selected channel, regardless of whitelist/blacklist',
-            id: 'alwaysLogSelected',
-            type: 'switch'
-          },
-          {
-            name: 'Always log DMs, regardless of whitelist/blacklist',
-            id: 'alwaysLogDM',
-            type: 'switch'
-          },
-          {
-            name: 'Always log ghost pings, regardless of whitelist/blacklist',
-            note: 'Messages sent in ignored/muted/blacklisted servers and channels will be logged and shown in sent, but only gets saved if a ghost ping occurs.',
-            id: 'alwaysLogGhostPings',
-            type: 'switch'
-          }
-        ]
-      })
-    );
-    list.push(
-      this.createGroup({
-        name: 'Display settings',
-        id: this.obfuscatedClass('ml2-settings-display'),
-        collapsible: true,
-        shown: false,
-        settings: [
-          {
-            name: 'Display dates with timestamps',
-            id: 'displayDates',
-            type: 'switch',
-            callback: () => {
-              if (this.selectedChannel) {
-                // change NOW
-                this.invalidateAllChannelCache();
-                this.cacheChannelMessages(this.selectedChannel.id);
-              }
-            }
-          },
-          {
-            name: 'Display deleted messages in chat',
-            id: 'showDeletedMessages',
-            type: 'switch',
-            callback: () => {
-              this.invalidateAllChannelCache();
-              if (this.selectedChannel) this.cacheChannelMessages(this.selectedChannel.id);
-            }
-          },
-          {
-            name: 'Display edited messages in chat',
-            id: 'showEditedMessages',
-            type: 'switch',
-            callback: () => this.dispatcher.dispatch({ type: 'MLV2_FORCE_UPDATE_MESSAGE_CONTENT' })
-          },
-          {
-            name: 'Max number of shown edits',
-            id: 'maxShownEdits',
-            type: 'textbox',
-            onChange: val => {
-              if (isNaN(val)) return this.showToast('Value must be a number!', { type: 'error' });
-              this.settings.maxShownEdits = parseInt(val);
-              this.dispatcher.dispatch({ type: 'MLV2_FORCE_UPDATE_MESSAGE_CONTENT' });
-            }
-          },
-          {
-            name: 'Show oldest edit instead of newest if over the shown edits limit',
-            id: 'hideNewerEditsFirst',
-            type: 'switch',
-            callback: () => this.dispatcher.dispatch({ type: 'MLV2_FORCE_UPDATE_MESSAGE_CONTENT' })
-          },
-          {
-            name: 'Use red background instead of red text for deleted messages',
-            id: 'useAlternativeDeletedStyle',
-            type: 'switch',
-            callback: () => this.dispatcher.dispatch({ type: 'MLV2_FORCE_UPDATE_MESSAGE' })
-          },
-          {
-            name: 'Display purged messages in chat',
-            id: 'showPurgedMessages',
-            type: 'switch',
-            callback: () => {
-              this.invalidateAllChannelCache();
-              if (this.selectedChannel) this.cacheChannelMessages(this.selectedChannel.id);
-            }
-          },
-          {
-            name: 'Restore deleted messages after reload',
-            id: 'restoreDeletedMessages',
-            type: 'switch',
-            callback: val => {
-              if (val) {
-                this.invalidateAllChannelCache();
-                if (this.selectedChannel) this.cacheChannelMessages(this.selectedChannel.id);
-              }
-            }
-          },
-          {
-            name: 'Show amount of new deleted messages when entering a channel',
-            id: 'showDeletedCount',
-            type: 'switch'
-          },
-          {
-            name: 'Show amount of new edited messages when entering a channel',
-            id: 'showEditedCount',
-            type: 'switch'
-          },
-          {
-            name: 'Display update notes',
-            id: 'displayUpdateNotes',
-            type: 'switch'
-          },
-          {
-            name: 'Menu sort direction',
-            id: 'reverseOrder',
-            type: 'radio',
-            options: [
-              {
-                name: 'Nouveau - Ancien',
-                value: false
-              },
-              {
-                name: 'Ancien - Nouveau',
-                value: true
-              }
-            ]
-          },
-          {
-            name: 'Use XenoLib notifications instead of toasts',
-            note: "This works for edit, send, delete and purge toasts, as well as delete and edit count toasts. Toggle it if you don't know what this does.",
-            id: 'useNotificationsInstead',
-            type: 'switch',
-            callback: e => (e ? XenoLib.Notifications.success('Using Xenolib notifications', { timeout: 5000 }) : this.showToast('Using toasts', { type: 'success', timeout: 5000 }))
-          }
-        ]
-      })
-    );
-    list.push(
-      this.createGroup({
-        name: 'Misc settings',
-        id: this.obfuscatedClass('ml2-settings-misc'),
-        collapsible: true,
-        shown: false,
-        settings: [
-          {
-            name: 'Disable saving data. Logged messages are erased after reload/restart. Disables auto backup.',
-            id: 'dontSaveData',
-            type: 'switch',
-            callback: val => {
-              if (!val) this.saveData();
-              if (!val && this.settings.autoBackup) this.saveBackup();
-            }
-          },
-          {
-            name: "Auto backup data (won't fully prevent losing data, just prevent total data loss)",
-            id: 'autoBackup',
-            type: 'switch',
-            callback: val => {
-              if (val && !this.settings.dontSaveData) this.saveBackup();
-            }
-          } /*
-                        {
-                            // no time, TODO!
-                            name: 'Deleted messages color',
-                            id: 'deletedMessageColor',
-                            type: 'color'
-                        }, */,
-          {
-            name: 'Aggresive message caching (makes sure we have the data of any deleted or edited messages)',
-            id: 'aggresiveMessageCaching',
-            type: 'switch'
-          },
-          {
-            name: 'Cache all images by storing them locally in the MLV2_IMAGE_CACHE folder inside the plugins folder',
-            id: 'cacheAllImages',
-            type: 'switch'
-          },
-          {
-            name: "Don't delete cached images",
-            note: "If the message the image is from is erased from data, the cached image will be kept. You'll have to monitor disk usage on your own!",
-            id: 'dontDeleteCachedImages',
-            type: 'switch'
-          },
-          {
-            name: 'Display open logs button next to the search box top right in channels',
-            id: 'showOpenLogsButton',
-            type: 'switch',
-            callback: val => {
-              if (val) return this.addOpenLogsButton();
-              this.removeOpenLogsButton();
-            }
-          },
-          {
-            name: 'Block spam edit notifications (if enabled)',
-            id: 'blockSpamEdit',
-            type: 'switch'
-          }
-        ]
-      })
-    );
-    list.push(
-      this.createGroup({
-        name: 'Toast notifications for guilds',
-        id: this.obfuscatedClass('ml2-settings-toast-guilds'),
-        collapsible: true,
-        shown: false,
-        settings: [
-          {
-            name: 'Message envoyé',
-            id: 'sent',
-            type: 'switch',
-            value: this.settings.toastToggles.sent,
-            onChange: val => {
-              this.settings.toastToggles.sent = val;
-            }
-          },
-          {
-            name: 'Message édité',
-            id: 'edited',
-            type: 'switch',
-            value: this.settings.toastToggles.edited,
-            onChange: val => {
-              this.settings.toastToggles.edited = val;
-            }
-          },
-          {
-            name: 'Message supprimé',
-            id: 'deleted',
-            type: 'switch',
-            value: this.settings.toastToggles.deleted,
-            onChange: val => {
-              this.settings.toastToggles.deleted = val;
-            }
-          },
-          {
-            name: 'Ghost pings',
-            id: 'ghostPings',
-            type: 'switch',
-            value: this.settings.toastToggles.ghostPings,
-            onChange: val => {
-              this.settings.toastToggles.ghostPings = val;
-            }
-          },
-          {
-            name: 'Disable toasts for local user (yourself)',
-            id: 'disableToastsForLocal',
-            type: 'switch',
-            value: this.settings.toastToggles.disableToastsForLocal,
-            onChange: val => {
-              this.settings.toastToggles.disableToastsForLocal = val;
-            }
-          }
-        ]
-      })
-    );
-
-    list.push(
-      this.createGroup({
-        name: 'Toast notifications for DMs',
-        id: this.obfuscatedClass('ml2-settings-toast-dms'),
-        collapsible: true,
-        shown: false,
-        settings: [
-          {
-            name: 'Message sent',
-            id: 'sent',
-            type: 'switch',
-            value: this.settings.toastTogglesDMs.sent,
-            onChange: val => {
-              this.settings.toastTogglesDMs.sent = val;
-            }
-          },
-          {
-            name: 'Message edited',
-            id: 'edited',
-            type: 'switch',
-            value: this.settings.toastTogglesDMs.edited,
-            onChange: val => {
-              this.settings.toastTogglesDMs.edited = val;
-            }
-          },
-          {
-            name: 'Message deleted',
-            id: 'deleted',
-            type: 'switch',
-            value: this.settings.toastTogglesDMs.deleted,
-            onChange: val => {
-              this.settings.toastTogglesDMs.deleted = val;
-            }
-          },
-          {
-            name: 'Ghost pings',
-            id: 'ghostPings',
-            type: 'switch',
-            value: this.settings.toastTogglesDMs.ghostPings,
-            onChange: val => {
-              this.settings.toastTogglesDMs.ghostPings = val;
-            }
-          }
-        ]
-      })
-    );
-
-    list.push(
-      this.createGroup({
-        name: 'Message caps',
+        name: 'Message en majuscule',
         id: this.obfuscatedClass('ml2-settings-caps'),
         collapsible: true,
         shown: false,
@@ -1716,20 +1362,8 @@ module.exports = class MessageLoggerV2 {
     const div = document.createElement('div');
     div.id = this.obfuscatedClass('ml2-settings-buttonbox');
     div.style.display = 'inline-flex';
-    div.appendChild(this.createButton('Changelog', () => XenoLib.showChangelog(`${this.getName()} has been updated!`, this.getVersion(), this.getChanges())));
-    div.appendChild(this.createButton('Stats', () => this.showStatsModal()));
-    div.appendChild(this.createButton('Donate', () => this.nodeModules.electron.shell.openExternal('https://paypal.me/lighty13')));
-    div.appendChild(
-      this.createButton('Support server', () => {
-        ZeresPluginLibrary.DiscordModules.LayerManager.popLayer();
-        if (this.tools.getServer('389049952732446731')) {
-          ZeresPluginLibrary.DiscordModules.GuildActions.transitionToGuildSync('389049952732446731');
-        } else {
-          ZeresPluginLibrary.DiscordModules.InviteActions.openNativeAppModal('NYvWdN5');
-        }
-      })
-    );
-    div.appendChild(this.createButton('Help', () => this.showLoggerHelpModal()));
+    div.appendChild(this.createButton('Statistiques', () => this.showStatsModal()));
+    div.appendChild(this.createButton('Aide', () => this.showLoggerHelpModal()));
     let button = div.firstElementChild;
     while (button) {
       button.style.marginRight = button.style.marginLeft = `5px`;
@@ -2393,7 +2027,7 @@ module.exports = class MessageLoggerV2 {
     } else if (channel && channel.recipients) {
       const user = this.tools.getUser(channel.recipients[0]);
       if (!user) return 'DMs';
-      if (useTags) return `<@${user.id}> DMs`;
+      if (useTags) return `dans les DMs de<@${user.id}>`;
       return `${user.username} DMs`;
     } else {
       return 'DMs';
@@ -2818,13 +2452,13 @@ module.exports = class MessageLoggerV2 {
         if (!notificationsBlacklisted) {
           if (guild ? this.settings.toastToggles.deleted && ((isLocalUser && !this.settings.toastToggles.disableToastsForLocal) || !isLocalUser) : this.settings.toastTogglesDMs.deleted && !isLocalUser) {
             if (this.settings.useNotificationsInstead) {
-              XenoLib.Notifications.danger(`Message deleted from ${this.getLiteralName(channel.guild_id, channel.id, true)}`, {
+              XenoLib.Notifications.danger(`Message supprimé ${this.getLiteralName(channel.guild_id, channel.id, true)}`, {
                 onClick: () => this.openWindow('deleted'),
                 onContext: () => this.jumpToMessage(dispatch.channelId, dispatch.id, guild && guild.id),
                 timeout: 4500
               });
             } else {
-              this.showToast(`Message deleted from ${this.getLiteralName(channel.guild_id, channel.id)}`, {
+              this.showToast(`Message supprimé sur ${this.getLiteralName(channel.guild_id, channel.id)}`, {
                 type: 'error',
                 onClick: () => this.openWindow('deleted'),
                 onContext: () => this.jumpToMessage(dispatch.channelId, dispatch.id, guild && guild.id),
@@ -2837,9 +2471,9 @@ module.exports = class MessageLoggerV2 {
         const record = this.messageRecord[dispatch.id];
 
         if ((!this.selectedChannel || this.selectedChannel.id != channel.id) && (guild ? this.settings.toastToggles.ghostPings : this.settings.toastTogglesDMs.ghostPings) && (!record || !record.ghost_pinged) && this.tools.isMentioned(deleted, this.localUser.id)) {
-          XenoLib.Notifications.warning(`You got ghost pinged in ${this.getLiteralName(channel.guild_id, channel.id, true)}`, { timeout: 0, onClick: () => this.openWindow('ghostpings'), onContext: () => this.jumpToMessage(dispatch.channelId, dispatch.id, guild && guild.id), channelId: dispatch.channelId });
+          XenoLib.Notifications.warning(`Vous avez été ghost ping dans ${this.getLiteralName(channel.guild_id, channel.id, true)}`, { timeout: 0, onClick: () => this.openWindow('ghostpings'), onContext: () => this.jumpToMessage(dispatch.channelId, dispatch.id, guild && guild.id), channelId: dispatch.channelId });
           if (!this.settings.useNotificationsInstead) {
-            this.showToast(`You got ghost pinged in ${this.getLiteralName(channel.guild_id, channel.id)}`, {
+            this.showToast(`Vous avez été ghost ping dans ${this.getLiteralName(channel.guild_id, channel.id)}`, {
               type: 'warning',
               onClick: () => this.openWindow('ghostpings'),
               onContext: () => this.jumpToMessage(dispatch.channelId, dispatch.id, guild && guild.id),
@@ -2989,13 +2623,13 @@ module.exports = class MessageLoggerV2 {
             }
             if (this.settings.blockSpamEdit || !this.editHistoryAntiSpam[author.id].blocked) {
               if (this.settings.useNotificationsInstead) {
-                XenoLib.Notifications.info(`Message edited in ${this.getLiteralName(channel.guild_id, channel.id, true)}`, {
+                XenoLib.Notifications.info(`Message édité sur ${this.getLiteralName(channel.guild_id, channel.id, true)}`, {
                   onClick: () => this.openWindow('edited'),
                   onContext: () => this.jumpToMessage(channel.id, dispatch.message.id, guild && guild.id),
                   timeout: 4500
                 });
               } else {
-                this.showToast(`Message edited in ${this.getLiteralName(channel.guild_id, channel.id)}`, {
+                this.showToast(`Message édité sur ${this.getLiteralName(channel.guild_id, channel.id)}`, {
                   type: 'info',
                   onClick: () => this.openWindow('edited'),
                   onContext: () => this.jumpToMessage(channel.id, dispatch.message.id, guild && guild.id),
@@ -3006,9 +2640,9 @@ module.exports = class MessageLoggerV2 {
           }
         }
         if ((!this.selectedChannel || this.selectedChannel.id != channel.id) && (guild ? this.settings.toastToggles.ghostPings : this.settings.toastTogglesDMs.ghostPings) && ghostPinged) {
-          XenoLib.Notifications.warning(`You got ghost pinged in ${this.getLiteralName(channel.guild_id, channel.id, true)}`, { timeout: 0, onClick: () => this.openWindow('ghostpings'), onContext: () => this.jumpToMessage(dispatch.channelId, dispatch.id, guild && guild.id), channelId: dispatch.channelId });
+          XenoLib.Notifications.warning(`Vous avez été ghost ping sur ${this.getLiteralName(channel.guild_id, channel.id, true)}`, { timeout: 0, onClick: () => this.openWindow('ghostpings'), onContext: () => this.jumpToMessage(dispatch.channelId, dispatch.id, guild && guild.id), channelId: dispatch.channelId });
           if (!this.settings.useNotificationsInstead) {
-            this.showToast(`You got ghost pinged in ${this.getLiteralName(channel.guild_id, channel.id)}`, {
+            this.showToast(`Vous avez été ghost ping sur ${this.getLiteralName(channel.guild_id, channel.id)}`, {
               type: 'warning',
               onClick: () => this.openWindow('ghostpings'),
               onContext: () => this.jumpToMessage(dispatch.channelId, dispatch.id, guild && guild.id),
@@ -3227,7 +2861,7 @@ module.exports = class MessageLoggerV2 {
         ret.props.children.ref = e => {
           if (e && !e.__tooltip) {
             // later
-            new ZeresPluginLibrary.Tooltip(e, 'Deleted: ' + _self.tools.createMomentObject(props.__MLV2_deleteTime).format('LLLL'), { side: 'left' });
+            new ZeresPluginLibrary.Tooltip(e, 'Supprimé le : ' + _self.tools.createMomentObject(props.__MLV2_deleteTime).format('LLLL'), { side: 'left' });
             e.__tooltip = true;
           }
           if (typeof oRef === 'function') return oRef(e);
@@ -4258,7 +3892,7 @@ module.exports = class MessageLoggerV2 {
         red: false
       });
     });
-    new ZeresPluginLibrary.Tooltip(helpButton, 'Aide ! ', { side: 'top' });
+    new ZeresPluginLibrary.Tooltip(helpButton, 'Aide ? ', { side: 'top' });
     return textBox;
   }
   // >>-|| MENU MODAL CREATION ||-<<
@@ -4292,7 +3926,7 @@ module.exports = class MessageLoggerV2 {
         type += ' messages';
       }
       this.createModal({
-        header: 'Clear log',
+        header: 'Supprimer les logs',
         children: ZeresPluginLibrary.DiscordModules.React.createElement(Text, { size: Text.Sizes.SIZE_16, children: [`Are you sure you want to delete all ${type}${this.menu.filter.length ? ' that also match filter' : ''}?`] }),
         confirmText: 'Confirm',
         cancelText: 'Cancel',
@@ -4325,7 +3959,7 @@ module.exports = class MessageLoggerV2 {
     };
     this.createModal(
       {
-        confirmText: 'Clear log',
+        confirmText: 'Supprimer les logs',
         cancelText: 'Sens de tri : ' + (!this.settings.reverseOrder ? 'Nouveau - Ancien' : 'Ancien - Nouveau'),
         header: ZeresPluginLibrary.ReactTools.createWrappedElement([this.createTextBox(), this.createHeader()]),
         size: this.createModal.confirmationModal.Sizes.LARGE,
@@ -4397,7 +4031,7 @@ module.exports = class MessageLoggerV2 {
           const options = menu.find(m => m.props.children && m.props.children.length > 10);
           options.props.children.splice(0, options.props.children.length);
           addElement(
-            'Hide Deleted Message',
+            'Cacher le message supprimé',
             () => {
               this.dispatcher.dispatch({
                 type: 'MESSAGE_DELETE',
@@ -4413,7 +4047,7 @@ module.exports = class MessageLoggerV2 {
           );
           const idx = this.noTintIds.indexOf(messageId);
           addElement(
-            `${idx !== -1 ? 'Add' : 'Remove'} Deleted Tint`,
+            `${idx !== -1 ? 'Add' : 'Retirer'} la teinte de suppression`,
             () => {
               if (idx !== -1) this.noTintIds.splice(idx, 1);
               else this.noTintIds.push(messageId);
@@ -4488,7 +4122,7 @@ module.exports = class MessageLoggerV2 {
         }
         if (record) {
           addElement(
-            'Remove From Log',
+            'Supprimer des logs',
             () => {
               this.deleteMessageFromRecords(messageId);
               this.saveData();
