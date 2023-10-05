@@ -3672,10 +3672,10 @@ module.exports = class MessageLoggerV2 {
         messages.push(i.id);
       }
     }
-    if (this.menu.selectedTab == 'Modifié') pushIdsIntoMessages(this.editedMessageRecord);
-    if (this.menu.selectedTab == 'Supprimé') pushIdsIntoMessages(this.deletedMessageRecord);
-    if (this.menu.selectedTab == 'Purgé') pushIdsIntoMessages(this.purgedMessageRecord);
-    if (this.menu.selectedTab == 'Ghost Pings') {
+    if (this.menu.selectedTab == 'edited') pushIdsIntoMessages(this.editedMessageRecord);
+    if (this.menu.selectedTab == 'deleted') pushIdsIntoMessages(this.deletedMessageRecord);
+    if (this.menu.selectedTab == 'purged') pushIdsIntoMessages(this.purgedMessageRecord);
+    if (this.menu.selectedTab == 'ghostpings') {
       checkIsMentioned(this.deletedMessageRecord);
       checkIsMentioned(this.editedMessageRecord);
       checkIsMentioned(this.purgedMessageRecord);
