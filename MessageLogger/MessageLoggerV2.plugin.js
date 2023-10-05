@@ -3927,7 +3927,7 @@ module.exports = class MessageLoggerV2 {
       }
       this.createModal({
         header: 'Supprimer les logs',
-        children: ZeresPluginLibrary.DiscordModules.React.createElement(Text, { size: Text.Sizes.SIZE_16, children: [`Are you sure you want to delete all ${type}${this.menu.filter.length ? ' that also match filter' : ''}?`] }),
+        children: ZeresPluginLibrary.DiscordModules.React.createElement(Text, { size: Text.Sizes.SIZE_16, children: [`Êtes-vous sûr de vouloir supprimer tous les messages supprimés ?`] }),
         confirmText: 'Confirm',
         cancelText: 'Cancel',
         onConfirm: () => {
