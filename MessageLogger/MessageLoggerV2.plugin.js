@@ -3927,9 +3927,9 @@ module.exports = class MessageLoggerV2 {
       }
       this.createModal({
         header: 'Supprimer les logs',
-        children: ZeresPluginLibrary.DiscordModules.React.createElement(Text, { size: Text.Sizes.SIZE_16, children: [`Êtes-vous sûr de vouloir supprimer tous les messages supprimés ?`] }),
-        confirmText: 'Confirm',
-        cancelText: 'Cancel',
+        children: ZeresPluginLibrary.DiscordModules.React.createElement(Text, { size: Text.Sizes.SIZE_16, children: [`Êtes-vous sûr de vouloir supprimer tous les messages de la catégorie ?`] }),
+        confirmText: 'Confirmer la suppression',
+        cancelText: 'Annuler la suppression',
         onConfirm: () => {
           if (this.menu.selectedTab == 'sent') {
             if (!this.menu.filter.length)
@@ -4040,18 +4040,18 @@ module.exports = class MessageLoggerV2 {
                 ML2: true // ignore ourselves lol, it's already deleted
                 // on a side note, probably does nothing if we don't ignore
               });
-              this.showToast('Hidden!', { type: 'success' });
+              this.showToast('Message caché !', { type: 'success' });
               record.delete_data.hidden = true;
               this.saveData();
             }
           );
           const idx = this.noTintIds.indexOf(messageId);
           addElement(
-            `${idx !== -1 ? 'Add' : 'Retirer'} la teinte de suppression`,
+            `${idx !== -1 ? 'Remettre' : 'Retirer'} la teinte de suppression`,
             () => {
               if (idx !== -1) this.noTintIds.splice(idx, 1);
               else this.noTintIds.push(messageId);
-              this.showToast(idx !== -1 ? 'Added!' : 'Removed!', { type: 'success' });
+              this.showToast(idx !== -1 ? 'Teinte remise !' : 'Teine retirée !', { type: 'success' });
             }
           );
         }
