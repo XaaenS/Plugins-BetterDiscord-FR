@@ -3,7 +3,7 @@
  * @author Sneax & Ralawette
  * @version 1.7.5
  * @description Ajoute un bouton Effacer à la liste des serveurs et à la fenêtre contextuelle des mentions
- * @source https://github.com/mwittrien/BetterDiscordAddons/tree/master/Plugins/ReadAllNotificationsButton/
+ * @source https://github.com/XaaenS/Plugins-BetterDiscord-FR
  */
 
 module.exports = (_ => {
