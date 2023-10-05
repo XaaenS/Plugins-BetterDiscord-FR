@@ -4159,7 +4159,7 @@ module.exports = class MessageLoggerV2 {
       const blacklistIdx = this.settings.blacklist.findIndex(m => m === id);
       if (whitelistIdx == -1 && blacklistIdx == -1) {
         addElement(
-          `Add to Whitelist`,
+          `Ajouter à la liste blanche`,
           () => {
             this.settings.whitelist.push(id);
             this.saveSettings();
@@ -4167,7 +4167,7 @@ module.exports = class MessageLoggerV2 {
           }
         );
         addElement(
-          `Add to Blacklist`,
+          `Ajouter à la liste noire`,
           () => {
             this.settings.blacklist.push(id);
             this.saveSettings();
@@ -4176,7 +4176,7 @@ module.exports = class MessageLoggerV2 {
         );
       } else if (whitelistIdx != -1) {
         addElement(
-          `Remove From Whitelist`,
+          `Supprimer de la liste blanche`,
           () => {
             this.settings.whitelist.splice(whitelistIdx, 1);
             this.saveSettings();
@@ -4184,7 +4184,7 @@ module.exports = class MessageLoggerV2 {
           }
         );
         addElement(
-          `Move to Blacklist`,
+          `Passer à la liste noire`,
           () => {
             this.settings.whitelist.splice(whitelistIdx, 1);
             this.settings.blacklist.push(id);
@@ -4194,7 +4194,7 @@ module.exports = class MessageLoggerV2 {
         );
       } else {
         addElement(
-          `Remove From Blacklist`,
+          `Supprimer de la liste noire`,
           () => {
             this.settings.blacklist.splice(blacklistIdx, 1);
             this.saveSettings();
@@ -4202,7 +4202,7 @@ module.exports = class MessageLoggerV2 {
           }
         );
         addElement(
-          `Move to Whitelist`,
+          `Passer à la liste blanche`,
           () => {
             this.settings.blacklist.splice(blacklistIdx, 1);
             this.settings.whitelist.push(id);
@@ -4213,7 +4213,7 @@ module.exports = class MessageLoggerV2 {
       }
       const notifIdx = this.settings.notificationBlacklist.indexOf(id);
       addElement(
-        `${notifIdx === -1 ? 'Add To' : 'Remove From'} Notification Blacklist`,
+        `${notifIdx === -1 ? 'Ajouter à' : 'Remove From'} la liste noire des notifications`,
         () => {
           if (notifIdx === -1) this.settings.notificationBlacklist.push(id);
           else this.settings.notificationBlacklist.splice(notifIdx, 1);
@@ -4234,7 +4234,7 @@ module.exports = class MessageLoggerV2 {
       const newItems = [];
       const addElement = (label, action, options = {}) => newItems.push({ label, action, ...options });
 
-      addElement('Open Logs', () => this.openWindow());
+      addElement('Ouvrir les logs', () => this.openWindow());
       addElement(
         `Open Log For Channel`,
         () => {
@@ -4264,10 +4264,10 @@ module.exports = class MessageLoggerV2 {
       const newItems = [];
       const addElement = (label, action, options = {}) => newItems.push({ label, action, ...options });
 
-      addElement('Open Logs', () => this.openWindow());
+      addElement('Ouvrir les logs', () => this.openWindow());
 
       addElement(
-        `Open Log For Guild`,
+        `Journal ouvert pour la guilde`,
         () => {
           _this.menu.filter = `guild:${props.guild.id}`;
           _this.openWindow();
@@ -4295,9 +4295,9 @@ module.exports = class MessageLoggerV2 {
       const newItems = [];
       const addElement = (label, action, options = {}) => newItems.push({ label, action, ...options });
 
-      addElement('Open Logs', () => this.openWindow());
+      addElement('Ouvrir les logs', () => this.openWindow());
       addElement(
-        `Open Log For User`,
+        `Ouvrir le journal pour l'utilisateur`,
         () => {
           _this.menu.filter = `user:${props.user.id}`;
           _this.openWindow();
@@ -4306,7 +4306,7 @@ module.exports = class MessageLoggerV2 {
 
       if (props.channel?.isDM()) {
         addElement(
-          `Open Log For DM`,
+          `Ouvrir le journal pour DM`,
           () => {
             _this.menu.filter = `channel:${props.channel.id}`;
             _this.openWindow();
